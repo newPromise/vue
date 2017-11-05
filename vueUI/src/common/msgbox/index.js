@@ -6,7 +6,7 @@ let instance
 let currentMsg
 let instancePool = []
 
-const callbackConfig = action => {
+const callbackDefault = action => {
   let callback = currentMsg.callback
   if (currentMsg && typeof callback === 'function') {
     callback(action)
@@ -42,12 +42,12 @@ const showMsg = options => {
     }
     document.body.appendChild(instance.$el)
     if (instance.callback === undefined) {
-      instance.callback = callbackConfig
+      instance.callback = callbackDefault
     }
   }
 }
 
-// 用于配置实例
+// 用于保存实例
 let msgBox = (options, callback) => {
   if (typeof options === 'string') {
     options = {
@@ -82,13 +82,30 @@ msgBox.alert = (title, message, options) => {
     options = title
     title = ''
   }
-  return msgBox(Object.assign({
+  const alertConfig = {
     title,
     message,
-    type: 'prompt',
+    type: 'alert',
+    showBox: true,
+    showMask: true,
+    showCancelButton: false
+  }
+  return msgBox(Object.assign(alertConfig, options))
+}
+
+msgBox.confirm = (title, message, options) => {
+  if (typeof title === 'object') {
+    options = title
+    title = ''
+  }
+  const confirmConfig = {
+    title,
+    message,
+    type: 'confirm',
     showBox: true,
     showMask: true
-  }, options))
+  }
+  return msgBox(Object.assign(confirmConfig, options))
 }
 
 export default msgBox
