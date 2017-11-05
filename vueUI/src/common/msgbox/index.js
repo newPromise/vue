@@ -56,7 +56,7 @@ let msgBox = (options, callback) => {
   } else if (options.callback) {
     callback = options.callback
   }
-  // 虽然不知道为什么,但是看起来好像好屌的样子
+  // 这里通过使用 resolve将 resolve 函数进行传递
   if (typeof Promise !== 'undefined') {
     return new Promise(function (resolve, reject) {
       instancePool.push({

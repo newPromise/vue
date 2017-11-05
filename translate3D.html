@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+<div class="oDiv">
+	<div class="other"></div>
+	<div class="move"></div>
+</div>
+<style>
+	.oDiv {
+		width: 300px;
+		height: 300px;
+		background-color: blue;
+		position: relative;
+	}
+	.oDiv div {
+		background-color: red;
+	}
+	.move {
+		left: 50%;
+		position: absolute;
+		top: 50%;
+		width: 50%;
+		height: 50%;
+		transform:  translate(-50%, -50%);
+	}
+	.other {
+
+	}
+</style>
+</body>
+</html>
