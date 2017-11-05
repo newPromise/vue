@@ -1,6 +1,6 @@
 <template>
   <div class="mp-msgbox-wrapper">
-    <transition class="mp-bounce">
+    <transition name="mp-bounce">
       <div class="mp-msgbox" v-if="showBox">
         <!-- 消息框头部 -->
         <div class="mp-msgbox-header" v-if="title">
@@ -16,13 +16,13 @@
           <div class="mp-msgbox-confirm" v-if="boxType === 'confirm'">
           </div>
           <!-- prompt 提示框 -->
-          <div class="mp-msgbox-prompt">
+          <div class="mp-msgbox-prompt" v-if="boxType === 'prompt' ">
           </div>
         </div>
         <!-- 消息框按钮 -->
         <div class="mp-msgbox-btns">
-          <button class="cancelBtn" v-text="cancelButtonText"/>
-          <button class="ensureBtn" v-text="ensureButtonText"/>
+          <button class="cancelBtn" v-if="showCancelButton" @click="handleAction('cancel')" v-text="cancelButtonText"/>
+          <button class="ensureBtn" v-if="showEnsureButton" @click="handleAction('confirm')" v-text="ensureButtonText"/>
         </div>
       </div>
     </transition>
@@ -41,10 +41,20 @@
        cancelButtonText: '取消',
        ensureButtonText: '确定',
        showBox: true,
-       showMask: true
+       showMask: true,
+       showCancelButton: true,
+       showEnsureButton: true
      }
    },
    components: {
+   },
+   methods: {
+     handleAction (action) {
+       this.showBox = false
+       this.showMask = false
+       const callback = this.callback
+       callback(action)
+     }
    }
  }
 </script>
@@ -114,11 +124,11 @@
 .mp-msgbox-btns .cancelBtn {
   border-right: 1px solid #ddd;
 }
-.mp-bounce {
+.mp-bounce-enter {
     opacity: 0;
     transform: translate3d(-50%, -50%, 0) scale(0.7);
   }
-.mp-bounce {
+.mp-bounce-leave-active {
     opacity: 0;
     transform: translate3d(-50%, -50%, 0) scale(0.9);
 }

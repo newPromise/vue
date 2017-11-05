@@ -55,6 +55,7 @@ var MessageBoxConstructor = Vue.extend(msgboxVue);
 var currentMsg, instance;
 var msgQueue = [];
 
+// 定义默认的回调函数
 const defaultCallback = action => {
   if (currentMsg) {
     var callback = currentMsg.callback;
