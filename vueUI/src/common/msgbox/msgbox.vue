@@ -9,14 +9,15 @@
         <!-- 消息框内容 -->
         <div class="mp-msgbox-content">
           <!-- alert提示框 -->
-          <div class="mp-msgbox-alert" v-if="boxType === 'alert'">
+          <div class="mp-msgbox-alert" v-if="type === 'alert'">
             {{message}}
           </div>
           <!-- confirm 提示框 -->
-          <div class="mp-msgbox-confirm" v-if="boxType === 'confirm'">
+          <div class="mp-msgbox-confirm" v-if="type === 'confirm'">
+            {{message}}
           </div>
           <!-- prompt 提示框 -->
-          <div class="mp-msgbox-prompt" v-if="boxType === 'prompt' ">
+          <div class="mp-msgbox-prompt" v-if="type === 'prompt' ">
           </div>
         </div>
         <!-- 消息框按钮 -->
@@ -35,13 +36,13 @@
    name: 'msgBox',
    data () {
      return {
-       boxType: 'alert',
+       type: '',
        title: '提示',
-       message: '我是内容',
+       message: '',
        cancelButtonText: '取消',
        ensureButtonText: '确定',
-       showBox: true,
-       showMask: true,
+       showBox: false,
+       showMask: false,
        showCancelButton: true,
        showEnsureButton: true
      }
@@ -81,7 +82,7 @@
   min-height: 36px;
   position: relative;
 }
-.mp-msgbox-alert {
+.mp-msgbox-alert, .mp-msgbox-confirm{
   text-align: center;
   color: #999;
   margin: 0;

@@ -14,7 +14,11 @@
    },
    methods: {
      dd () {
-       this.msg.alert('我是标题', '我是内容').then(() => {
+       const options = {
+         title: '标题',
+         message: '内容'
+       }
+       this.msg.confirm(options).then(() => {
          console.log('你好')
        }, () => {
          console.log('我拒绝了')

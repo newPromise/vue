@@ -41,7 +41,7 @@ const showMsg = options => {
       }
     }
     document.body.appendChild(instance.$el)
-    if (instance.callback === undefined) {
+    if (typeof instance.callback === 'undefined') {
       instance.callback = callbackDefault
     }
   }
