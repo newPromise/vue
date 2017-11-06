@@ -14,15 +14,7 @@
    },
    methods: {
      dd () {
-       const options = {
-         title: '标题',
-         message: '内容'
-       }
-       this.msg.confirm(options).then(() => {
-         console.log('你好')
-       }, () => {
-         console.log('我拒绝了')
-       })
+       this.alert('zha', 'fds')
      }
    },
    mounted () {

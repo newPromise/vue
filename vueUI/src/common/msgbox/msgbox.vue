@@ -1,53 +1,63 @@
 <template>
   <div class="mp-msgbox-wrapper">
     <transition name="mp-bounce">
-      <div class="mp-msgbox" v-if="showBox">
+      <div class="mp-msgbox" v-if="defaultOption.showBox">
         <!-- 消息框头部 -->
-        <div class="mp-msgbox-header" v-if="title">
-          <div class="mp-msgbox-title">{{title}}</div>
+        <div class="mp-msgbox-header" v-if="defaultOption.title">
+          <div class="mp-msgbox-title">{{defaultOption.title}} {{value}}</div>
         </div>
         <!-- 消息框内容 -->
         <div class="mp-msgbox-content">
           <!-- alert提示框 -->
-          <div class="mp-msgbox-alert" v-if="type === 'alert'">
-            {{message}}
-          </div>
-          <!-- confirm 提示框 -->
-          <div class="mp-msgbox-confirm" v-if="type === 'confirm'">
-            {{message}}
-          </div>
-          <!-- prompt 提示框 -->
-          <div class="mp-msgbox-prompt" v-if="type === 'prompt' ">
-          </div>
+          <slot name="msgContent"></slot>
         </div>
         <!-- 消息框按钮 -->
         <div class="mp-msgbox-btns">
-          <button class="cancelBtn" v-if="showCancelButton" @click="handleAction('cancel')" v-text="cancelButtonText"/>
-          <button class="ensureBtn" v-if="showEnsureButton" @click="handleAction('confirm')" v-text="ensureButtonText"/>
+          <button class="cancelBtn" v-if="defaultOption.showCancelButton" @click="handleAction('cancel')" v-text="cancelButtonText"/>
+          <button class="ensureBtn" v-if="defaultOption.showEnsureButton" @click="handleAction('confirm')" v-text="ensureButtonText"/>
         </div>
       </div>
     </transition>
-    <div class="msg-mask" v-if="showMask"></div>
+    <div class="msg-mask" v-if="defaultOption.showMask"></div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
  export default {
+   props: {
+    options: {
+      default: {},
+      type: Object
+    }
+   },
    name: 'msgBox',
    data () {
      return {
-       type: '',
-       title: '提示',
-       message: '',
-       cancelButtonText: '取消',
-       ensureButtonText: '确定',
-       showBox: false,
-       showMask: false,
-       showCancelButton: true,
-       showEnsureButton: true
+       defaultOption: {
+          type: '',
+          title: '提示',
+          message: '',
+          cancelButtonText: '取消',
+          ensureButtonText: '确定',
+          showBox: false,
+          showMask: false,
+          showCancelButton: true,
+          showEnsureButton: true
+       }
+     }
+   },
+   watch: {
+     options () {
+       console.log('msgbox 中的options')
      }
    },
    components: {
+   },
+   mounted () {
+     console.log('optionsd',this.options)
+     this.defaultOption = Object.assign(this.defaultOption, { showBox: true });
+     console.log('defaultOption', this.defaultOption);
+     console.log('object', Object.assign(this.defaultOption, this.options));
    },
    methods: {
      handleAction (action) {
