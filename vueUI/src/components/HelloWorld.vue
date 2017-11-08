@@ -1,12 +1,14 @@
 <template>
  <div>
-  <p>回复低俗</p>
-  <p>比好浮点数</p>
-  <button @click="dd">点击加载</button>
+  <sliderow></sliderow>
+  <sliderow></sliderow>
+  <sliderow></sliderow>
+  <sliderow></sliderow>
  </div>
 </template>
 
 <script type="text/ecmascript-6">
+ import sliderow from '../common/sliderow.vue';
  export default {
    data () {
      return {
@@ -20,6 +22,7 @@
    mounted () {
    },
    components: {
+     sliderow
    }
  }
 </script>
