@@ -229,3 +229,18 @@ export default {
 </style>
 
 ```
+// index.js 文件
+```
+const instanceCase = [];
+let instance;
+const install = (el) => {
+  instance = el;
+  instanceCase.push(instance);
+  instance.beClick = function () {
+    for (const single of instanceCase) {
+      single.distance = 0;
+    }
+  };
+};
+export default install;
+```
