@@ -3,7 +3,7 @@
     <div class="mp-sliderow" :class="{ 'back': isback }" ref="slide" id="d" :style="{ left: distance + 'px', right: rightInstance + 'px' }">
       <div class="row" >{{readStatu}}</div>
       <div class="mp-sliderow-slide">
-        <span class="sliderow-top">置顶</span><span @click="readAct" class="sliderow-read">{{hasRead ? '标为已读' : '标为未读'}}</span><span class="sliderow-delete" @click="deleteAct" >删除</span>
+        <span @click="top(1)" class="sliderow-top">置顶</span><span @click="readAct" class="sliderow-read">{{hasRead ? '标为已读' : '标为未读'}}</span><span  class="sliderow-delete" @click="deleteAct" >删除</span>
       </div>
     </div>
   </div>
@@ -41,7 +41,10 @@ export default {
     },
     deleteAct () {
       this.$el.parentNode.removeChild(this.$el);
-    },
+		},
+		top () {
+			this.$emit('top', 1);
+		},
     reset () {
       this.distance = 0;
     },
@@ -83,7 +86,7 @@ export default {
 				this.distance = -slideActions;
 				this.isback = true;
 			}
-			if (-this.slideLeft < 100) {
+			if (-this.slideLeft < 200) {
 				this.distance = 0;
 				this.isback = true;
 			} else {
