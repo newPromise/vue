@@ -26,7 +26,7 @@
 					<div class="bannernav">
 							<ul class="navul">
 								<li class="navli">
-									<a>手机新品抢先购</a>
+									<a href="#phone">手机新品抢先购</a>
 								<li class="navli">
 									<a>电视旗舰949院起</a>
 								<li class="navli">
@@ -50,8 +50,7 @@
 						<a class="title">小米MIX2全陶瓷尊享版</a>
 						<p class="info">全面屏2.0, unibody 全陶瓷</p>
 						<p class="price">
-							<sub>￥</sub>
-							<span>4699</span>
+							<sup>￥</sup><span>4699</span>
 						</p>
 						<a class="buy-btn">立即购买</a>
 					</div>
@@ -67,8 +66,7 @@
 						<a class="title">小米MIX2全陶瓷尊享版</a>
 						<p class="info">全面屏2.0 unibody 全陶瓷</p>
 						<p class="price">
-							<sub>￥</sub>
-							<span>4899</span>
+							<sup>￥</sup><span>4899</span>
 						</p>
 						<a class="buy-btn">立即购买</a>
 					</div>
@@ -77,15 +75,40 @@
 			<div class="pro">
 				<div class="pro-col3 pro-col clearfix">
 					<div class="item item-left">
-						<img class="item-img">
-						<div class="item-con">
+						<a class="col3-img">
+							<img src="./static/img/imgLeft.jpg">
+							<span class="img-tag">
+								<img src="./static/img/tag2.png">
+							</span>
+						</a>
+						<div class="item-detail">
 							<div class="con-l">
+								<a class="name">米家激光投影电视</a>
+								<p class="info">超短焦，在家看巨幕</p>
 							</div>
 							<div class="con-r">
+								<p class="price"><sup>￥</sup><span>2332</span></p>
+								<a class="buy-btn">立即购买</a>
 							</div>
 						</div>
 					</div>
-					<div class="item item-right">
+					<div class="item item-right" >
+						<a class="col3-img">
+							<img src="./static/img/imgRig.jpg">
+							<span class="img-tag">
+							  <img src="./static/img/tag2.png">
+							</span>					
+						</a>
+						<div class="item-detail">
+							<div class="con-l">
+								<a class="name">空气净化器2s</a>
+								<p class="info">经典再升级，好空气看得见</p>
+							</div>
+							<div class="con-r">
+								<p class="price"><sup>￥</sup><span>4343</span></p>
+								<a class="buy-btn">立即购买</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -220,6 +243,15 @@
 		bottom: 10px;
 		right: 10px;
 	}
+	sup {
+		font-size: 75%;
+		line-height: 0;
+		vertical-align: baseline;
+	}
+	.pro-col .item {
+		top: -3px;
+		margin-right: 2px;
+	}
 	.img-tag img {
 		width: 100px;
 		height: 100px;
@@ -243,9 +275,11 @@
 		color: #666;
 		margin: 0;
 	}
+	.pro-col2 .price{
+		margin-top: 45px;
+	}
 	.price {
 		color: rgb(234, 96, 89);
-		margin-top: 45px;
 		font-size: 24px;
 		line-height: 1;
 	}
@@ -260,6 +294,56 @@
 		margin-top: 18px;
 		color: white;
 		background: rgb(234, 96, 89);
+	}
+	.pro-col3 .item {
+		height: 492px;
+		width: 606px;
+		float: left;
+		background: white;
+	}
+	.pro-col3 .item-left {
+		display: inline-block;
+		float: left;
+	}
+	.pro-col3 .item-right {
+		display: inline-block;
+		float: right;
+	}
+
+	.col3-img {
+		position: relative;
+		width: 606px;
+		height: 358px;
+		display: block;
+	}
+	.pro-col3 .item-detail {
+		padding-top: 10px;
+	}
+	.pro-col3 .item-detail .con-l {
+		float: left;
+		margin-left: 28px;
+		padding-top: 35px;
+		width: 360px;
+	}
+	.pro-col3 .item-detail .name {
+		font-weight: 400;
+		font-size: 33px;
+		color: #242424;
+	}
+	.pro-col3 .item-detail .info {
+		font-size: 14px;
+		line-height: 20px;
+		color: #666;
+	}
+
+	.pro-col3 .item-detail .con-r {
+		float: right;
+		margin-right: 45px;
+		padding-top: 25px;
+		text-align: right;
+	}
+	.pro-col3 .item-detail sup {
+
 	}
 </style>
 </html>
