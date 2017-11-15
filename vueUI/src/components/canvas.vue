@@ -1,6 +1,6 @@
 <template>
  <div>
-	 <canvas id="canvas" width="100000px"></canvas>
+	 <canvas id="canvas"  height="1000" width="400"></canvas>
  </div>
 </template>
 
@@ -15,14 +15,11 @@ export default {
 	components: {
 	},
 	mounted () {
-		trendChart.init(document.getElementById('canvas'));
+		var chart = trendChart.init(document.getElementById('canvas'));
+		console.log('chart', chart);
 	}
 }
 </script>
 <style>
-#canvas {
-	width: 100%;
-	height: 400px;
-}
 </style>
 

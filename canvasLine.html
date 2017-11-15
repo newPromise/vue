@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+	<div class="canvas">
+		<canvas id="canvas" width="1000" height="1000"></canvas>
+	</div>
+<script type="text/javascript">
+  window.onload = function () {
+		let dom = document.getElementById('canvas');
+		let ctx = dom.getContext('2d');
+		let flag = true;
+		let linePool;
+		function line(x, y) {
+			this.beginPath();
+			if (linePool === undefined) {
+				linePool = [];
+				this.moveTo(0, 0);
+			} else {
+				let line = linePool.shift();
+				this.moveTo(line[0], line[1]);
+			}
+			this.lineTo(x, y);
+			this.fillStyle = 'red';
+			this.fill();
+			this.strokeStyle = 'black'
+			this.stroke();
+			flag = false;
+			console.log('this', this);
+			linePool.push([x, y]);
+		}
+		let toLine = line.bind(ctx);
+		toLine(300, 100);
+		toLine(300, 200);
+		toLine(100, 50);
+	}
+</script>
+</body>
+</html>
