@@ -19,7 +19,6 @@ const songList = [
 
 
 function Music (song) {
-	console.log(this.audio);
 	this.status = 'pause';
 	this.audio = id('audio');
 	this.songIndex = 0;
@@ -100,16 +99,24 @@ Music.prototype = {
 	audioSrc: function() {
 		let that = this;
 		return '../data/music/' + this.song.singer + ' - ' + this.song.songName + '.mp3';
+	},
+	timeRefersh: function() {
+		let that = this;
+		that.audio.ontimeupdate = function () {
+			id('time').innerText =  '0' + parseInt(that.audio.duration / 60) + ':' + parseFloat(that.audio.duration / 60);
+		}
 	}
 }
 
 window.onload = function () {
 	id('content').style.width = window.screen.width + 'px';
-	id('content').style.height = window.screen.width + 'px';
-	let instance = new Music();
+	id('content').style.height = window.screen.height + 'px';
+	let instance = new Music(songList[0]);
 	id('play').onclick = function () {
+		instance.audio.src = instance.audioSrc();
 		instance.play();
 	};
 	instance.nextSong(id('next'));
 	instance.preSong(id('pre'));
+	instance.timeRefersh();
 }
