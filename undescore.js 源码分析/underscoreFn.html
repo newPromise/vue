@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+</head>
+<body>
+<div>
+	<p class="para"></p>
+	<p class="para"></p>
+</div>
+<script src="./underscore.js"></script>
+<script>
+  window.onload = function () {
+		let list = [1, 2, 3];
+		function filter(memo, value) {
+			return memo * value ;
+		}
+		_.map(list, filter)
+
+	function map(obj, iteratee, context) {
+		if (obj === null) return [];
+		var keys = obj.length !== +obj.length && Object.keys(obj),
+				length = (keys || obj).length,
+				results = Array(length),
+				currentIndex;
+		for(var index = 0; index < length; index++) {
+			currentIndex = keys ? keys[index] : index;
+			results[index] = iteratee(obj[currentIndex], currentIndex, obj);
+		}
+		return results;
+	}
+	console.log('reduce', _.reduce(list, filter));
+	console.log(map(list, filter));
+	function reduce(obj, iteratee, memo, context) {
+		if (obj === null) obj = [];
+		var keys = obj.length !== +obj.length && Object.keys(),
+				length = (keys || obj).length,
+				index = 0, currentIndex;
+		if (arguments.length < 3) {
+			console.log('index', index++);
+			memo = obj[keys ? keys[index++] : index++];
+		}
+		console.log('memo', memo);
+		for (; index < length; index++) {
+			currentIndex = keys ? keys[index] : index;
+			memo = iteratee(memo, obj[currentIndex], currentIndex, obj);
+		}
+		return memo;
+	}
+	function contact(a, b) {
+		return a.concat(b);
+	}
+	list = [[1, 2], [3, 4], [5, 6]];
+	console.log(_.reduceRight(list, contact));
+
+	function reduceRight(obj, iteratee, memo, context) {
+		if (obj === null) return [];
+		var keys = obj.length !== +obj.length && Object.keys(obj),
+				index = (keys || obj).length,
+				currentIndex;
+		if (arguments.length < 3) {
+			console.log('index', index);
+			memo = obj[keys ? keys[--index] : --index];
+		}
+		while(index-- > 0) {
+			currentIndex = keys ? keys[index] : index;
+			memo = iteratee(memo, obj[currentIndex], currentIndex, obj);
+		}
+		return memo;
+	}
+	console.log('自己的reduce', reduceRight(list, contact));
+	list = [1, 2, 4];
+
+	function getOdd(num) {
+		return num % 2 === 0;
+	}
+	function findIndex(array, predicate) {
+		var length = !array ? 0 : array.length;
+		for (let i = 0; i < length; i++) {
+			if (predicate(array[i], i, array)) return i;
+		}
+		return -1;
+	}
+	function find(obj, predicate) {
+		var key;
+		// 对象
+		if (obj.length !== +obj.length) {
+			key = findKey(obj, predicate);
+		} else {
+			key = findIndex(obj, predicate);
+		}
+		if (key !== void 0 && key !== -1) return obj[key]; 
+	}
+	console.log('得到的对象', find(list, getOdd));
+	console.log(document.getElementsByClassName('para') == null);
+	}
+</script>
+</body>
+</html>
