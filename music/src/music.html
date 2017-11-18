@@ -20,10 +20,10 @@
 			overflow-x: hidden;
 		}
 		.music {
+      overflow: hidden;
 			width: 300px;
 			margin: 0 auto;
-			height: 500px;
-			background: red;
+			height: 400px;
 			margin-top: 50px;
 		}
 		.content {
@@ -32,13 +32,24 @@
 			height: 100%;
 			background: url('../data/img/background.jpg') fixed no-repeat 0 0;
 			background-size: 100% 100%;
-		}
+    }
+    .progress {
+      width: 100%;
+      height: 5px;
+      position: fixed;
+      bottom: 80px;
+    }
+    .progressBar {
+      line-height: 5px;
+      position: absolute;
+      display: inline-block;
+      height: 5px;
+      background:rgb(224, 223, 120);
+    }
 		.controlbar {
-			padding: 0 10px;
 			width: 100%;
 			height: 80px;
 			background:  rgba(130, 130, 130, 0.3);
-			border-top: 2px solid red;
 			position: fixed;
 			bottom: 0;
 		}
@@ -51,19 +62,47 @@
 		}
 		.controler span {
 			margin: 10px;
-		}
+    }
+    .controlbar > span {
+      margin: 0 10px;
+    }
 		.iconfont {
 			font-size: 45px;
-			color: white;
-		}
-		#songMsg {
+      color: white;
+      opacity: 0.8;
+    }
+    .iconfont:hover {
+      opacity: 1;
+    }
+		#songMsg{
 			line-height: 80px;
 			color: white;
-			float: left;
-		}
+    }
+    .time {
+      line-height: 80px;
+      float: right;
+    }
+    #songMsg {
+      float: left;
+    }
+
 		.icon-pcduanbizhixiazaicishutubiao1 {
 			font-size: 45px;
 		}
+    .lyric {
+      overflow-y: scroll;
+      height: 400px;
+      width: 300px;
+      text-align: center;
+      color: white;
+    }
+    .lyric::-webkit-scrollbar {
+      display: none;
+    }
+    .lyric span {
+      display: block;
+      line-height: 30px;
+    }
 	</style>
 </head>
 <body>
@@ -73,18 +112,22 @@
 				您的浏览器不支持 audio 标签
 			</audio>
 			<div class="music">
+        <div id="lyric" class="lyric">
+
+        </div>
 			</div>
 			<div class="sidebar">
-			</div>
+      </div>
+      <div class="progress"><span class="progressBar" id="progressBar"></span></div> 
 			<div class="controlbar">
-					<span id="songMsg">歌曲</span>
+          <span id="songMsg">歌曲</span>
+          <span id="time" class="time"></span> 
 				<div class="controler">
 					<span id="pre"><i class="iconfont icon-shangyiqu"></i></span>
-					<span id="play"><i class="icon-pcduanbizhixiazaicishutubiao1 iconfont" id="play"></i></span>
+					<span id="play"><i class="icon-pcduanbizhixiazaicishutubiao iconfont" id="toPlay"></i></span>
 					<span id="next"><i class="icon-xiayiqu iconfont"></i></span>
 					<span id="songName"></span>
-					<span id="time"></span>
-				</div>
+        </div>
 			</div>
 		</div>
 	</div>
