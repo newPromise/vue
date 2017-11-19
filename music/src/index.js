@@ -114,12 +114,10 @@ Music.prototype = {
   },
   // 歌词处理
   lyricActions: function() {
-		console.log('lyrics', lyrics, 'songIndex', this.songIndex);
 		let that = this;
 		that.lyricCase = [];
 		if (!lyrics[that.songIndex]) return;
 		let pattern = /\[\d{2}:\d{2}.\d{2}\]/g;
-		console.log(lyrics[that.songIndex]);
 		let result = lyrics[that.songIndex].match(pattern);
 		let s;
 		// 转化为秒
@@ -161,18 +159,27 @@ Music.prototype = {
 	// 歌曲时间刷新
 	timeRefersh: function() {
 		let that = this;
+		let lastPauseTime = '';
+		let lastLyric = '';
+		console.log('status', that.status);
 		that.audio.ontimeupdate = function () {
+			if (that.status === 'pause') {
+				id('lyric').innerHTML = lastLyric;
+				return;
+			} else {
+				id('lyric').innerHTML = '';
+			}
       let minute;
       let seconds;
       let scrollIndex = 0;
       let scrollTop;
-      id('lyric').innerHTML = '';
       for (let a of that.lyricCase) {
         if (that.audio.currentTime > a[0]) {
           id('lyric').innerHTML += "<span>" + a[1] + "</span>";
           scrollIndex += 1;
         }
 			}
+			lastLyric = id('lyric').innerHTML;
 			if (that.audio.currentTime >= that.audio.duration) {
 				that.status = 'pause';
 				that.playBtnChange();
@@ -195,27 +202,33 @@ Music.prototype = {
 	}
 }
 
-var ajax = new XMLHttpRequest();
-//步骤二:设置请求的url参数,参数一是请求的类型,参数二是请求的url,可以带参数,动态的传递参数starName到服务端
-ajax.open('get', 'http://localhost:8090/');
-//步骤三:发送请求
-ajax.send();
-//步骤四:注册事件 onreadystatechange 状态改变就会调用
-ajax.onreadystatechange = function () {
-   if (ajax.readyState==4 &&ajax.status==200) {
-    //步骤五 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
-　　　　lyrics = JSON.parse(ajax.responseText);//输入相应的内容
-			 console.log(lyrics);
-  　　}
+function request () {
+	var ajax = new XMLHttpRequest();
+	//步骤二:设置请求的url参数,参数一是请求的类型,参数二是请求的url,可以带参数,动态的传递参数starName到服务端
+	ajax.open('get', 'http://localhost:8090/');
+	//步骤三:发送请求
+	ajax.send();
+	//步骤四:注册事件 onreadystatechange 状态改变就会调用
+	ajax.onreadystatechange = function () {
+		 if (ajax.readyState==4 &&ajax.status==200) {
+			//步骤五 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
+	　　　　lyrics = JSON.parse(ajax.responseText);//输入相应的内容
+		　}
+	}
 }
 
 
+
+
 window.onload = function () {
+	request();
 	id('content').style.width = window.screen.width + 'px';
 	id('content').style.height = window.screen.height + 'px';
 	let instance = new Music(songList[0]);
 	id('play').onclick = function () {
-		instance.audio.src = instance.audioSrc();
+		if (!instance.audio.src) {
+			instance.audio.src = instance.audioSrc();
+		}
     instance.play();
     instance.playBtnChange();
 	};

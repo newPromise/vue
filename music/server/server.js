@@ -10,6 +10,7 @@ const urls = [
 	'陈奕迅-十年.lrc'
 ];
 
+// 读取文件
 function readFile() {
 	let url = urls[urlIndex];
 	fs.readFile(base + url, 'utf8', (err, data) => {
