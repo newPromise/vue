@@ -7,7 +7,8 @@ let urlIndex = 0;
 const urls = [
 	'张杰-勿忘心安.lrc',
 	'陈奕迅-浮夸.lrc',
-	'陈奕迅-十年.lrc'
+	'陈奕迅-十年.lrc',
+	'戴荃-悟空.lrc'
 ];
 
 // 读取文件
@@ -19,6 +20,7 @@ function readFile() {
 		}
 		if (data) {
 			lyrics.push(data);
+			console.log('data', data);
 			urlIndex++;
 			readFile();
 		}
