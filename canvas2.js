@@ -27,8 +27,6 @@ function drawRedLine(x, y) {
   this.stroke();
   this.closePath();
   lastLineCase.push([x, y]);
-  console.log('yessssssss', lastLineCase);
-  console.log('line', [x, y]);
 }
 
 // 画方框

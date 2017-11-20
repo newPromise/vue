@@ -94,8 +94,50 @@
 		}
 		if (key !== void 0 && key !== -1) return obj[key]; 
 	}
-	console.log('得到的对象', find(list, getOdd));
-	console.log(document.getElementsByClassName('para') == null);
+	list = [1, 2, 5, 6];
+	function toFilter(num) {
+		return num % 2 === 0;
+	}
+	console.log('通过过滤的数组', _.filter(list, toFilter));
+	function filter(obj, predicate, context) {
+		let results = [];
+		if (obj == null) {
+			return results;
+		}
+		_.each(obj, function(value, index, list) {
+			if (predicate(value)) {
+				results.push(value);
+			}
+		})
+		return results;
+	}
+	list = [{name: '张宁宁', age: 18}, {name: '张宁宁', age: 70}];
+	function where(list, sObj) {
+		let results = [];
+		let flag = false;
+		if (list == null) {
+			return results;
+		}
+		for (let obj of list) {
+			for (let key in obj) {
+				if (Object.keys(sObj).includes(key)) {
+					if (sObj[key] === obj[key]) {
+						flag = true;
+					} else {
+						flag = false;
+					}
+				} else {
+					flag = false;
+				}
+			}
+			if (flag) {
+				results.push(obj);
+			}
+		}
+		return results;
+	}
+	console.log('自制的函数', where(list, {name: '张宁宁'}));
+	console.log('张宁宁');
 	}
 </script>
 </body>
