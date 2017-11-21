@@ -32,18 +32,14 @@
 		}
 		return results;
 	}
-	console.log('reduce', _.reduce(list, filter));
-	console.log(map(list, filter));
 	function reduce(obj, iteratee, memo, context) {
 		if (obj === null) obj = [];
 		var keys = obj.length !== +obj.length && Object.keys(),
 				length = (keys || obj).length,
 				index = 0, currentIndex;
 		if (arguments.length < 3) {
-			console.log('index', index++);
 			memo = obj[keys ? keys[index++] : index++];
 		}
-		console.log('memo', memo);
 		for (; index < length; index++) {
 			currentIndex = keys ? keys[index] : index;
 			memo = iteratee(memo, obj[currentIndex], currentIndex, obj);
@@ -54,15 +50,12 @@
 		return a.concat(b);
 	}
 	list = [[1, 2], [3, 4], [5, 6]];
-	console.log(_.reduceRight(list, contact));
-
 	function reduceRight(obj, iteratee, memo, context) {
 		if (obj === null) return [];
 		var keys = obj.length !== +obj.length && Object.keys(obj),
 				index = (keys || obj).length,
 				currentIndex;
 		if (arguments.length < 3) {
-			console.log('index', index);
 			memo = obj[keys ? keys[--index] : --index];
 		}
 		while(index-- > 0) {
@@ -71,9 +64,7 @@
 		}
 		return memo;
 	}
-	console.log('自己的reduce', reduceRight(list, contact));
 	list = [1, 2, 4];
-
 	function getOdd(num) {
 		return num % 2 === 0;
 	}
@@ -98,7 +89,6 @@
 	function toFilter(num) {
 		return num % 2 === 0;
 	}
-	console.log('通过过滤的数组', _.filter(list, toFilter));
 	function filter(obj, predicate, context) {
 		let results = [];
 		if (obj == null) {
@@ -137,9 +127,28 @@
 		return results;
   }
   function name() {
-    return function() {
+    return function(name) {
+			console.log(name);
     }
-  }
+	}
+	list = [4, 4, 4, 4];
+	function rejectFn (num) {
+		return num % 2 === 0;
+	}
+	console.log(_.reject(list, rejectFn));
+	// 如果obj 中的对象都通过 predicate 函数的真值检验那么返回为true
+	function every(obj, predicate) {
+		if (obj == null) return true;
+		let keys = obj.length == +obj.length && Object.keys(obj);
+		let currentKey;
+		let length = (keys || obj).length;
+		for (let index = 0; index < length; index++) {
+			currentKey = keys ? keys[index] : index;
+			if (!predicate(obj[currentKey])) return false;
+		}
+		return true;
+	}
+	console.log('是否每件事情都达到了', every(list, rejectFn));
 	}
 </script>
 </body>
