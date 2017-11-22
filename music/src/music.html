@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="../data/fonts/iconfont.css">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
 	<script type="text/javascript" src="./index.js"></script>
 	<title>Document</title>
 	<style>
@@ -25,6 +26,7 @@
 			margin: 0 auto;
 			height: 400px;
 			margin-top: 50px;
+			position: relative;
 		}
 		.content {
 			overflow-x: hidden;
@@ -92,11 +94,13 @@
 			font-size: 45px;
 		}
     .lyric {
+			position: absolute;
       overflow-y: scroll;
       height: 400px;
       width: 300px;
       text-align: center;
-      color: white;
+			color: white;
+			transition: top 1s;
     }
     .lyric::-webkit-scrollbar {
       display: none;

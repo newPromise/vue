@@ -162,6 +162,7 @@ Music.prototype = {
 		let that = this;
 		let lastPauseTime = '';
 		let lastLyric = '';
+		let lastScrollTop = 0;
 		console.log('status', that.status);
 		that.audio.ontimeupdate = function () {
 			if (that.status === 'pause') {
@@ -173,13 +174,16 @@ Music.prototype = {
       let minute;
       let seconds;
       let scrollIndex = 0;
-      let scrollTop;
+			let scrollTop;
       for (let a of that.lyricCase) {
         if (that.audio.currentTime > a[0]) {
           id('lyric').innerHTML += "<span>" + a[1] + "</span>";
           scrollIndex += 1;
         }
 			}
+			id('lyric').scrollTop = lastScrollTop + 30;
+			lastScrollTop = id('lyric').scrollTop;
+			console.log(id('lyric').scrollTop);
 			lastLyric = id('lyric').innerHTML;
 			if (that.audio.currentTime >= that.audio.duration) {
 				that.status = 'pause';
