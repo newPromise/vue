@@ -288,6 +288,7 @@
 
   // Invoke a method (with arguments) on every item in a collection.
   _.invoke = function(obj, method) {
+    // 使用 Array.slice.call 返回一个子数组
     var args = slice.call(arguments, 2);
     var isFunc = _.isFunction(method);
     return _.map(obj, function(value) {

@@ -141,8 +141,6 @@
     return false;
   }
   list = [1, 2, 3];
-  console.log(container);
-  console.log('是否包含', container(list, 5));
 	}
 	list = [4, 4, 4, 4];
 	function rejectFn (num) {
@@ -161,7 +159,35 @@
 		}
 		return true;
 	}
-	console.log('是否每件事情都达到了', every(list, rejectFn));
+	function contain(obj, value, fromIndex) {
+  if (obj == null) return false;
+  let list = obj;
+  if (obj.length !== +obj.length) {
+    list = obj.values();
+	}
+	console.log(list.indexOf(value));
+  return list.indexOf(value, fromIndex) >= 0;
+}
+ console.log(contain([1, 2, 3], 2, 'fds'));
+ function get(value) {
+	 console.log(this);
+	 console.log('得到的值', this);
+	 console.log(value);
+ }
+ list = [[1, 2]];
+ function pluck(list, name) {
+	 let props = [];
+	 list.map((obj) => {
+		 if (Object.keys(obj).indexOf(name) >= 0) {
+			 props.push(obj[name]);
+		 } else {
+			 props.push(void 0);
+		 }
+	 });
+	 return props;
+ }
+ let a = [{a: 1}, {b: 2}, {a: '张艺苇'}];
+ console.log(pluck(a, 'a'));
 </script>
 </body>
 </html>

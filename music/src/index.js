@@ -25,7 +25,8 @@ const songList = [
 let lyrics = [];
 function Music (song) {
 	this.status = 'pause';
-	this.audio = id('audio');
+	this.audio = $('#audio');
+	console.log('audio', this.audio);
 	this.songIndex = 0;
 	this.song = song;
 	this.lyricCase = [];
@@ -98,7 +99,7 @@ Music.prototype = {
 	// 更新歌曲名称以及作者
 	refreshSong: function() {
 		let that = this;
-		id('songMsg').innerText = `${that.song.songName} - ${that.song.singer}`;
+		$('#songMsg').innerText = `${that.song.songName} - ${that.song.singer}`;
 	},
 	volumeAdd: function() {
 		let that = this;
@@ -152,9 +153,9 @@ Music.prototype = {
 	// 改变播放按钮
 	playBtnChange: function() {
 		if (this.status === 'play') {
-      id('toPlay').className = 'icon-pcduanbizhixiazaicishutubiao1 iconfont ';
+      $('#toPlay').className = 'icon-pcduanbizhixiazaicishutubiao1 iconfont ';
     } else {
-      id('toPlay').className = 'icon-pcduanbizhixiazaicishutubiao iconfont ';
+      $('#toPlay').className = 'icon-pcduanbizhixiazaicishutubiao iconfont ';
     }
 	},
 	// 歌曲时间刷新
@@ -166,10 +167,10 @@ Music.prototype = {
 		console.log('status', that.status);
 		that.audio.ontimeupdate = function () {
 			if (that.status === 'pause') {
-				id('lyric').innerHTML = lastLyric;
+				$('#lyric').innerHTML = lastLyric;
 				return;
 			} else {
-				id('lyric').innerHTML = '';
+				$('#lyric').innerHTML = '';
 			}
       let minute;
       let seconds;
@@ -177,19 +178,19 @@ Music.prototype = {
 			let scrollTop;
       for (let a of that.lyricCase) {
         if (that.audio.currentTime > a[0]) {
-          id('lyric').innerHTML += "<span>" + a[1] + "</span>";
+          $('#lyric').innerHTML += "<span>" + a[1] + "</span>";
           scrollIndex += 1;
         }
 			}
-			id('lyric').scrollTop = lastScrollTop + 30;
-			lastScrollTop = id('lyric').scrollTop;
-			console.log(id('lyric').scrollTop);
-			lastLyric = id('lyric').innerHTML;
+			$('#lyric').scrollTop = lastScrollTop + 30;
+			lastScrollTop = $('#lyric').scrollTop;
+			console.log($('#lyric').scrollTop);
+			lastLyric = $('#lyric').innerHTML;
 			if (that.audio.currentTime >= that.audio.duration) {
 				that.status = 'pause';
 				that.playBtnChange();
 			}
-      id('progressBar').style.width = (that.audio.currentTime / that.audio.duration) * parseInt(id('content').style.width) + 'px';
+      $('#progressBar').style.width = (that.audio.currentTime / that.audio.duration) * parseInt($('#content').style.width) + 'px';
       let getTime = function (time) {
         let m;
         let s;
@@ -201,8 +202,8 @@ Music.prototype = {
           s, m
         }
       };
-      id('time').innerText = getTime(that.audio.currentTime).m + ':' + getTime(that.audio.currentTime).s + ' / ';
-			id('time').innerText +=  getTime(that.audio.duration).m + ':' + getTime(that.audio.duration).s;
+      $('#time').innerText = getTime(that.audio.currentTime).m + ':' + getTime(that.audio.currentTime).s + ' / ';
+			$('#time').innerText +=  getTime(that.audio.duration).m + ':' + getTime(that.audio.duration).s;
 		}
 	}
 }
@@ -222,22 +223,28 @@ function request () {
 	}
 }
 
+function ajax() {
+	$.get('http://localhost:8090/', {}, function (data) {
+		lyrics = JSON.parse(data);
+	})
+}
+
 
 
 
 window.onload = function () {
-	request();
-	id('content').style.width = window.screen.width + 'px';
-	id('content').style.height = window.screen.height + 'px';
+	ajax();
+	$('#content').css('width', window.screen.width + 'px');
+	$('#content').css('height', window.screen.height + 'px');
 	let instance = new Music(songList[0]);
-	id('play').onclick = function () {
+	$('#play').bind('click', function() {
 		if (!instance.audio.src) {
 			instance.audio.src = instance.audioSrc();
 		}
     instance.play();
     instance.playBtnChange();
-	};
-	instance.nextSong(id('next'));
-	instance.preSong(id('pre'));
+	});
+	instance.nextSong($('#next'));
+	instance.preSong($('#pre'));
 	instance.timeRefersh();
 }
