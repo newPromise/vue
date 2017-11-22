@@ -141,6 +141,18 @@
       
     }
   }
+  function container(obj, value, fromIndex) {
+    if (obj == null) return false;
+    let length = obj.length;
+    let index = fromIndex || 0;
+    if (obj.indexOf(value) >= 0) {
+      return true;
+    }
+    return false;
+  }
+  list = [1, 2, 3];
+  console.log(container);
+  console.log('是否包含', container(list, 5));
 	
 	}
 </script>
