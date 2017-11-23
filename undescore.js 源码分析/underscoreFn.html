@@ -188,6 +188,12 @@
  }
  let a = [{a: 1}, {b: 2}, {a: '张艺苇'}];
  console.log(pluck(a, 'a'));
+ // underscore.js max 函数
+ var list = [{name: '张宁宁ds', age: 12}, {name: '张艺苇', age: 40}, {name: '张艺苇', age: 50}];
+ function getMax(value) {
+   return value.name.length;
+ }
+ console.log('我是一段文字', _.max(list, getMax));
 </script>
 </body>
 </html>
