@@ -25,8 +25,7 @@ const songList = [
 let lyrics = [];
 function Music (song) {
 	this.status = 'pause';
-	this.audio = $('#audio');
-	console.log('audio', this.audio);
+	this.audio = $('#audio')[0];
 	this.songIndex = 0;
 	this.song = song;
 	this.lyricCase = [];
@@ -99,7 +98,7 @@ Music.prototype = {
 	// 更新歌曲名称以及作者
 	refreshSong: function() {
 		let that = this;
-		$('#songMsg').innerText = `${that.song.songName} - ${that.song.singer}`;
+		$('#songMsg').text(`${that.song.songName} - ${that.song.singer}`);
 	},
 	volumeAdd: function() {
 		let that = this;
@@ -153,9 +152,11 @@ Music.prototype = {
 	// 改变播放按钮
 	playBtnChange: function() {
 		if (this.status === 'play') {
-      $('#toPlay').className = 'icon-pcduanbizhixiazaicishutubiao1 iconfont ';
+			$('#toPlay').removeClass('icon-pcduanbizhixiazaicishutubiao');
+      $('#toPlay').addClass('icon-pcduanbizhixiazaicishutubiao1');
     } else {
-      $('#toPlay').className = 'icon-pcduanbizhixiazaicishutubiao iconfont ';
+			$('#toPlay').removeClass('icon-pcduanbizhixiazaicishutubiao1');
+			$('#toPlay').addClass('icon-pcduanbizhixiazaicishutubiao')
     }
 	},
 	// 歌曲时间刷新
@@ -164,13 +165,12 @@ Music.prototype = {
 		let lastPauseTime = '';
 		let lastLyric = '';
 		let lastScrollTop = 0;
-		console.log('status', that.status);
 		that.audio.ontimeupdate = function () {
 			if (that.status === 'pause') {
-				$('#lyric').innerHTML = lastLyric;
+				$('#lyric').html(lastLyric);
 				return;
 			} else {
-				$('#lyric').innerHTML = '';
+				$('#lyric').html(+$('#lyric').html());
 			}
       let minute;
       let seconds;
@@ -178,19 +178,18 @@ Music.prototype = {
 			let scrollTop;
       for (let a of that.lyricCase) {
         if (that.audio.currentTime > a[0]) {
-          $('#lyric').innerHTML += "<span>" + a[1] + "</span>";
+          $('#lyric').html($('#lyric').html() + "<span>" + a[1] + "</span>");
           scrollIndex += 1;
         }
 			}
-			$('#lyric').scrollTop = lastScrollTop + 30;
-			lastScrollTop = $('#lyric').scrollTop;
-			console.log($('#lyric').scrollTop);
-			lastLyric = $('#lyric').innerHTML;
+			$('#lyric').scrollTop(lastScrollTop + 30);
+			lastScrollTop = $('#lyric').scrollTop();
+			lastLyric = $('#lyric').html();
 			if (that.audio.currentTime >= that.audio.duration) {
 				that.status = 'pause';
 				that.playBtnChange();
 			}
-      $('#progressBar').style.width = (that.audio.currentTime / that.audio.duration) * parseInt($('#content').style.width) + 'px';
+      $('#progressBar').css('width', (that.audio.currentTime / that.audio.duration) * parseInt($('#content').css('width')));
       let getTime = function (time) {
         let m;
         let s;
@@ -202,12 +201,13 @@ Music.prototype = {
           s, m
         }
       };
-      $('#time').innerText = getTime(that.audio.currentTime).m + ':' + getTime(that.audio.currentTime).s + ' / ';
-			$('#time').innerText +=  getTime(that.audio.duration).m + ':' + getTime(that.audio.duration).s;
+      $('#time').text(getTime(that.audio.currentTime).m + ':' + getTime(that.audio.currentTime).s + ' / ');
+			$('#time').text($('#time').text() + getTime(that.audio.duration).m + ':' + getTime(that.audio.duration).s);
 		}
 	}
 }
 
+// 原生的 ajax 请求方法
 function request () {
 	var ajax = new XMLHttpRequest();
 	//步骤二:设置请求的url参数,参数一是请求的类型,参数二是请求的url,可以带参数,动态的传递参数starName到服务端
@@ -223,6 +223,7 @@ function request () {
 	}
 }
 
+// 使用 jquery 的 ajax 方法进行请求
 function ajax() {
 	$.get('http://localhost:8090/', {}, function (data) {
 		lyrics = JSON.parse(data);
@@ -244,7 +245,7 @@ window.onload = function () {
     instance.play();
     instance.playBtnChange();
 	});
-	instance.nextSong($('#next'));
-	instance.preSong($('#pre'));
+	instance.nextSong($('#next')[0]);
+	instance.preSong($('#pre')[0]);
 	instance.timeRefersh();
 }

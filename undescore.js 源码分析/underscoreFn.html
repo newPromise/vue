@@ -193,7 +193,8 @@
  function getMax(value) {
    return value.name.length;
  }
- console.log('我是一段文字', _.max(list, getMax));
+ list = [1, 2, 4];
+ console.log(_.groupBy(list, function(num) { return num % 2 }));
 </script>
 </body>
 </html>
