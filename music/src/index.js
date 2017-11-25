@@ -43,7 +43,6 @@ Music.prototype = {
 		} else {
 			that.pause();
 		}
-		console.log('得到播放器的声音', that.audio.volume);
 		that.refreshSong();
 		that.getSong();
 	},
@@ -98,14 +97,7 @@ Music.prototype = {
 		let that = this;
 		$('#songMsg').text(`${that.song.songName} - ${that.song.singer}`);
 	},
-	volumeAdd: function() {
-		let that = this;
-		that.audio.volume += 0.1;
-	},
-	volumePev: function() {
-		let that = this;
-		that.audio.volume -= 0.1;
-	},
+	// 控制音量变化
 	volumeBarAct: function() {
 		let that = this;
 		let isMouseDown = false;
@@ -118,8 +110,6 @@ Music.prototype = {
 		$('.bar').css('width', $('.volume-bar').css('width'));
 		$('.volume-btn').css('left', $('.volume-bar').css('width'));
 		$('.volume-btn').mousedown((e) => {
-			console.log(e);
-			console.log('btn');
 			isMouseDown = true;
 			Left = $('.volume-btn').css('left');
 			Left = parseInt(Left, 0);
@@ -129,7 +119,6 @@ Music.prototype = {
 		$('.volume-bar').mousedown((e) => {
 			if (!isMouseDown) return;
 			startX = e.clientX;
-			console.log('bar');
 		})
 		$('.controlbar').mousemove((e) => {
 			if (!isMouseDown) return;
@@ -138,15 +127,12 @@ Music.prototype = {
 			$('.bar').css('width', moveWid)
 			moveLeft = moveX - startX + Left;
 			$('.volume-btn').css('left', moveLeft);
-			console.log('volume-bar', $('.volume-bar').css('width'));
 			that.audio.volume = parseInt($('.bar').css('width')) / parseInt($('.volume-bar').css('width'));
-			console.log('move');
 		})
 		$('.controlbar').mouseup(() => {
 			isMouseDown = false;
 			moveX = 0;
 			startX = 0;
-			console.log('up')
 		})
 	},
   // 获取到播放歌曲的 地址信息
@@ -207,16 +193,16 @@ Music.prototype = {
 		let lastLyric = '';
 		let lastScrollTop = 0;
 		that.audio.ontimeupdate = function () {
+			let minute;
+      let seconds;
+      let scrollIndex = 0;
+			let scrollTop;
 			if (that.status === 'pause') {
 				$('#lyric').html(lastLyric);
 				return;
 			} else {
 				$('#lyric').html(+$('#lyric').html());
 			}
-      let minute;
-      let seconds;
-      let scrollIndex = 0;
-			let scrollTop;
       for (let a of that.lyricCase) {
         if (that.audio.currentTime > a[0]) {
           $('#lyric').html($('#lyric').html() + "<span>" + a[1] + "</span>");
@@ -248,7 +234,7 @@ Music.prototype = {
 	}
 }
 
-// 使用 jquery 的 ajax 方法进行请求
+// ajax 请求
 function ajax() {
 	$.get('http://localhost:8090/', {}, function (data) {
 		lyrics = JSON.parse(data);
