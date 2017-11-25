@@ -58,18 +58,66 @@
 			bottom: 0;
 		}
 		.controler {
+			position: relative;
 			margin: auto;
 			width: 400px;
 			height: 100%;
 			line-height: 80px;
 			text-align: center;
 		}
-		.controler span {
+		.controler .play span {
 			margin: 10px;
     }
-    .controlbar > span {
+    .controlbar  > span {
       margin: 0 10px;
-    }
+		}
+		.control {
+			margin: auto;
+			width: 80%;
+			position: relative;
+			height: 100%;
+			display: flex;
+			align-items: center;
+		}
+		.play {
+			position: absolute;
+			left: 0;
+			right: 0;
+		}
+		.volume {
+			position: absolute;
+			right: -50px;
+		}
+		.volume-bar{
+			position: relative;
+			height: 3px;
+			width: 100px;
+			background: gray;
+		}
+		.volume-bar .bar {
+			background-color: red;
+			height: 2px;
+			width: 0;
+			position: absolute;
+			left: 0;
+		}
+		.volume-btn{
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			width: 12px;
+			height: 12px;
+			margin-top: -5px;
+			border-radius: 50%;
+			background-color: rgba(248, 242, 242, 0.7);
+		}
+		.volume-btn:hover{
+			-moz-box-shadow:2px 2px 20px #333333;
+			-webkit-box-shadow:2px 2px 20px #333333;
+			box-shadow:2px 2px 20px #333333;
+			background-color: white;
+		}
 		.iconfont {
 			font-size: 45px;
       color: white;
@@ -126,15 +174,18 @@
       </div>
       <div class="progress"><span class="progressBar" id="progressBar"></span></div> 
 			<div class="controlbar">
-          <span id="songMsg">歌曲</span>
-          <span id="time" class="time"></span> 
+				<span id="songMsg">歌曲</span>
+				<span id="time" class="time"></span> 
 				<div class="controler">
-					<div class="control-play">
+					<div class="control">
+						<div class="play">
 							<span id="pre"><i class="iconfont icon-shangyiqu"></i></span>
 							<span id="play"><i class="icon-pcduanbizhixiazaicishutubiao iconfont" id="toPlay"></i></span>
 							<span id="next"><i class="icon-xiayiqu iconfont"></i></span>
-					</div>
-					<div class="control-volumn">
+						</div>
+						<div class="volume">
+							<div class="volume-bar"><span class="bar"></span><span class="volume-btn"></span></div>
+						</div>
 					</div>
 				</div>
 			</div>

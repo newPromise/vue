@@ -371,9 +371,12 @@
     var shuffled = Array(length);
     for (var index = 0, rand; index < length; index++) {
       rand = _.random(0, index);
+      console.log('得到的随机数', index, rand);
       if (rand !== index) shuffled[index] = shuffled[rand];
+      console.log(shuffled);
       shuffled[rand] = set[index];
     }
+    console.log('最总的结果', shuffled);
     return shuffled;
   };
 
@@ -1316,6 +1319,8 @@
 
   // Return a random integer between min and max (inclusive).
   _.random = function(min, max) {
+    // 如果 max 为null
+    // 将min 赋给 max
     if (max == null) {
       max = min;
       min = 0;

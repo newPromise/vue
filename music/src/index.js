@@ -1,6 +1,3 @@
-function id (idName) {
-	return document.getElementById(idName);
-}
 
 
 const songList = [
@@ -46,6 +43,7 @@ Music.prototype = {
 		} else {
 			that.pause();
 		}
+		console.log('得到播放器的声音', that.audio.volume);
 		that.refreshSong();
 		that.getSong();
 	},
@@ -107,6 +105,49 @@ Music.prototype = {
 	volumePev: function() {
 		let that = this;
 		that.audio.volume -= 0.1;
+	},
+	volumeBarAct: function() {
+		let that = this;
+		let isMouseDown = false;
+		let startX = 0;
+		let moveX = 0;
+		let moveLeft = 0;
+		let moveWid = 0;
+		let left = 0;
+		let barWid = 0;
+		$('.bar').css('width', $('.volume-bar').css('width'));
+		$('.volume-btn').css('left', $('.volume-bar').css('width'));
+		$('.volume-btn').mousedown((e) => {
+			console.log(e);
+			console.log('btn');
+			isMouseDown = true;
+			Left = $('.volume-btn').css('left');
+			Left = parseInt(Left, 0);
+			barWid = $('.bar').css('width');
+			barWid = parseInt(barWid);
+		})
+		$('.volume-bar').mousedown((e) => {
+			if (!isMouseDown) return;
+			startX = e.clientX;
+			console.log('bar');
+		})
+		$('.controlbar').mousemove((e) => {
+			if (!isMouseDown) return;
+			moveX = e.clientX;
+			moveWid = moveX - startX + barWid;
+			$('.bar').css('width', moveWid)
+			moveLeft = moveX - startX + Left;
+			$('.volume-btn').css('left', moveLeft);
+			console.log('volume-bar', $('.volume-bar').css('width'));
+			that.audio.volume = parseInt($('.bar').css('width')) / parseInt($('.volume-bar').css('width'));
+			console.log('move');
+		})
+		$('.controlbar').mouseup(() => {
+			isMouseDown = false;
+			moveX = 0;
+			startX = 0;
+			console.log('up')
+		})
 	},
   // 获取到播放歌曲的 地址信息
 	audioSrc: function() {
@@ -207,22 +248,6 @@ Music.prototype = {
 	}
 }
 
-// 原生的 ajax 请求方法
-function request () {
-	var ajax = new XMLHttpRequest();
-	//步骤二:设置请求的url参数,参数一是请求的类型,参数二是请求的url,可以带参数,动态的传递参数starName到服务端
-	ajax.open('get', 'http://localhost:8090/');
-	//步骤三:发送请求
-	ajax.send();
-	//步骤四:注册事件 onreadystatechange 状态改变就会调用
-	ajax.onreadystatechange = function () {
-		 if (ajax.readyState==4 &&ajax.status==200) {
-			//步骤五 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
-	　　　　lyrics = JSON.parse(ajax.responseText);//输入相应的内容
-		　}
-	}
-}
-
 // 使用 jquery 的 ajax 方法进行请求
 function ajax() {
 	$.get('http://localhost:8090/', {}, function (data) {
@@ -248,4 +273,5 @@ window.onload = function () {
 	instance.nextSong($('#next')[0]);
 	instance.preSong($('#pre')[0]);
 	instance.timeRefersh();
+	instance.volumeBarAct();
 }

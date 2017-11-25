@@ -195,6 +195,34 @@
  }
  list = [1, 2, 4];
  console.log(_.groupBy(list, function(num) { return num % 2 }));
+ list = [{name: '张宁宁', age: 20}, {name: '张宁宁', age: 50}];
+ function group(behavior) {
+	 return function (list, iteratee, context) {
+		 let result = {};
+		 _.each(list, function(value, index) {
+			 var key = iteratee(value, index, obj);
+			 behavior(result, value, key);
+		 })
+		 return result;
+	 }
+ }
+let groupBy = group(function(result, value, key) {
+	result[key] = value;
+});
+let obj = [1, 2, 4];
+let result = groupBy(obj, function(num) {
+	return num % 2;
+});
+console.log('得到的计算result', result);
+
+let countBy = group(function(result, value, key) {
+	if (_.has(result, key)) result[key] ++; else result[key] = 1;
+});
+console.log('得到的计数值', countBy(obj, function(num) {
+	return num % 2;
+}));
+list = [1, 2, 3, 4, 5, 6];
+console.log(_.shuffle(list));
 </script>
 </body>
 </html>
