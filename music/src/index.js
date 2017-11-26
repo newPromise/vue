@@ -263,9 +263,7 @@ function ajax() {
 }
 
 
-
-
-window.onload = function () {
+$(document).ready(function () {
 	ajax();
 	$('#content').css('width', window.screen.width + 'px');
 	$('#content').css('height', window.screen.height + 'px');
@@ -288,4 +286,4 @@ window.onload = function () {
 		console.log('this', this);
 	  $('.musicCaseWrapper').removeClass('musicCaseShow');
 	})
-}
+});
