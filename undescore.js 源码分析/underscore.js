@@ -440,8 +440,11 @@
   // Safely create a real, live array from anything iterable.
   _.toArray = function(obj) {
     if (!obj) return [];
+    // 如果是一个数组
     if (_.isArray(obj)) return slice.call(obj);
+    // 如果
     if (obj.length === +obj.length) return _.map(obj, _.identity);
+    // 返回 obj 的值
     return _.values(obj);
   };
 

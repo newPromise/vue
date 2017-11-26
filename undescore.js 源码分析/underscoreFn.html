@@ -223,6 +223,16 @@ console.log('得到的计数值', countBy(obj, function(num) {
 }));
 list = [1, 2, 3, 4, 5, 6];
 console.log(_.shuffle(list));
+let arrLikeObj = document.getElementsByTagName('p');
+console.log('长度', arrLikeObj.length);
+console.log('类数组对象的类型', Object.prototype.toString.call(arrLikeObj));
+console.log('类数组对象', document.getElementsByTagName('p'));
+function args() {
+	console.log('得到的参数', arguments);
+	console.log('得到的参数类型', Object.prototype.toString.call(arguments));
+	console.log('参数是否是数组', Array.isArray(arguments));
+}
+args(1, 2, 3, 4, 5);
 </script>
 </body>
 </html>

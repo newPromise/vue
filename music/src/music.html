@@ -157,6 +157,37 @@
       display: block;
       line-height: 30px;
     }
+		.music-contain {
+			width: 100%;
+		}
+		.musicCaseWrapper {
+			position: fixed;
+			left: -200px;
+			top: 200px;
+			transition: left 1s;
+		}
+		.musicCaseShow {
+			left: 0;
+		}
+		.musicCaseWrapper .musicCase {
+			float: left;
+			width: 200px;
+			height: 300px;
+			background-color: lightcyan;
+		}
+		.musicCaseWrapper .sideBar {
+			float: left;
+			width: 40px;
+			height: 100px;
+			background-color: green;
+		}
+		.musicCaseWrapper .sideBar {
+			width: 20px;
+		}
+		.lyricLink {
+			padding: 5px;
+			display: block;
+		}
 	</style>
 </head>
 <body>
@@ -165,12 +196,17 @@
 			<audio  id="audio">
 				您的浏览器不支持 audio 标签
 			</audio>
-			<div class="music">
-        <div id="lyric" class="lyric">
-
-        </div>
+			<div class="music-contain">
+				<div class="music">
+						<div id="lyric" class="lyric">
+						</div>
+				</div>
 			</div>
-			<div class="sidebar">
+			<div class="musicCaseWrapper">
+				<div class="musicCase"></div>
+				<div class="sideBar">
+					<span class="slideLyrics">歌曲信息</span>
+				</div>
       </div>
       <div class="progress"><span class="progressBar" id="progressBar"></span></div> 
 			<div class="controlbar">

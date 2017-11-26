@@ -26,6 +26,7 @@ function Music (song) {
 	this.songIndex = 0;
 	this.song = song;
 	this.lyricCase = [];
+	this.alllyrics();
 	if (this.song) {
 		this.singer = this.song.singer;
 		this.time = this.song.time;
@@ -76,6 +77,26 @@ Music.prototype = {
 			that.audio.play();
 			this.status = 'play';
 			that.playBtnChange();
+		}
+	},
+	// 侧边栏歌词列表
+	alllyrics: function() {
+		let that = this;
+		let allLyrics = '';
+		songList.map((value, index, list) => {
+			let singlesong = `<a class="lyricLink" href="javascript:void(0)">${value.songName} - ${value.singer}</a>`;
+			allLyrics += singlesong;
+		});
+		$('.musicCase').html(allLyrics);
+	  for (let index = 0; index < $('.lyricLink').length; index++) {
+			$(`.lyricLink:eq(${index})`).click(function() {
+				that.songIndex = index;
+				that.getSong();
+				that.audio.src = that.audioSrc();
+				that.audio.play();
+				that.status = 'play';
+				that.playBtnChange();
+			})
 		}
 	},
 	// 从歌曲列表中得到歌曲
@@ -260,4 +281,11 @@ window.onload = function () {
 	instance.preSong($('#pre')[0]);
 	instance.timeRefersh();
 	instance.volumeBarAct();
+	$('.slideLyrics').mouseenter(() => {
+		$('.musicCaseWrapper').addClass('musicCaseShow');
+	});
+	$('.musicCase').mouseleave(() => {
+		console.log('this', this);
+	  $('.musicCaseWrapper').removeClass('musicCaseShow');
+	})
 }
