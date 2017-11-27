@@ -227,10 +227,10 @@ let arrLikeObj = document.getElementsByTagName('p');
 console.log('长度', arrLikeObj.length);
 console.log('类数组对象的类型', Object.prototype.toString.call(arrLikeObj));
 console.log('类数组对象', document.getElementsByTagName('p'));
-function args() {
-	console.log('得到的参数', arguments);
-	console.log('得到的参数类型', Object.prototype.toString.call(arguments));
-	console.log('参数是否是数组', Array.isArray(arguments));
+// 如何将一个嵌套多层的数组转化为一层的数组？
+
+function flatten() {
+  
 }
 args(1, 2, 3, 4, 5);
 </script>
