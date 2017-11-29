@@ -509,14 +509,23 @@
   // Internal implementation of a recursive `flatten` function.
   var flatten = function(input, shallow, strict, startIndex) {
     var output = [], idx = 0, value;
+    // i = 0; length = input.length i < length i++
     for (var i = startIndex || 0, length = input && input.length; i < length; i++) {
       value = input[i];
+      // if value and value.length and value is array or value is arguments
+      // 判断 value 是一个数组或者是一个类数组对象 arguments
       if (value && value.length >= 0 && (_.isArray(value) || _.isArguments(value))) {
         //flatten current level of array or arguments object
         if (!shallow) value = flatten(value, shallow, strict);
+        // 这里的 value 是通过使用 flatten 输出的结果
+        // value.length 用于获得嵌套数组中的长度一次相加
         var j = 0, len = value.length;
+        // optput.length = optput.length + len;
         output.length += len;
+        // 对于每一次都要进行下面的工作
+        // value[j++]
         while (j < len) {
+          // 先输出 j 再进行 ++
           output[idx++] = value[j++];
         }
       } else if (!strict) {

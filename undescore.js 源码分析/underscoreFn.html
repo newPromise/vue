@@ -229,10 +229,15 @@ console.log('类数组对象的类型', Object.prototype.toString.call(arrLikeOb
 console.log('类数组对象', document.getElementsByTagName('p'));
 // 如何将一个嵌套多层的数组转化为一层的数组？
 
-function flatten() {
-  
+function without(array, value) {
+  console.log('ars', arguments);
+  let a = Array.prototype.slice.call(arguments, 1);
+  let rest = array.filter((item) => {
+    // 这里需要返回一个值
+    return a.indexOf(item) == -1;
+  });
 }
-args(1, 2, 3, 4, 5);
+without([1, 2, 3], 1, 2);
 </script>
 </body>
 </html>
