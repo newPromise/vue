@@ -544,28 +544,36 @@
   _.without = function(array) {
     return _.difference(array, slice.call(arguments, 1));
   };
-
+  // algorighm 演算法， 计算规则, 运算程序
+  // 产生一个数组的副本，如果数组已经被排序了， 你可以选择一个更快的算法
   // Produce a duplicate-free version of the array. If the array has already
   // been sorted, you have the option of using a faster algorithm.
   // Aliased as `unique`.
   _.uniq = _.unique = function(array, isSorted, iteratee, context) {
     if (array == null) return [];
+    // 判断是否为 布尔值
     if (!_.isBoolean(isSorted)) {
       context = iteratee;
       iteratee = isSorted;
       isSorted = false;
     }
+    // 当 iteratee 不为 null 的时候
     if (iteratee != null) iteratee = cb(iteratee, context);
+    // result 为空 seen 为空
     var result = [];
     var seen = [];
     for (var i = 0, length = array.length; i < length; i++) {
       var value = array[i],
+      // iteratee 函数存在？ 执行 iteratee 函数， 否则返回 value
           computed = iteratee ? iteratee(value, i, array) : value;
-      if (isSorted) {
+      if (isSorted) {  
         if (!i || seen !== computed) result.push(value);
         seen = computed;
       } else if (iteratee) {
+        // 如果 containes 函数返回为 true
         if (!_.contains(seen, computed)) {
+          // 将 computed 的结果压入进入 seen 中
+          // 将 value 的结果推入到 result 中
           seen.push(computed);
           result.push(value);
         }
