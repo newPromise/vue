@@ -228,11 +228,22 @@ console.log('长度', arrLikeObj.length);
 console.log('类数组对象的类型', Object.prototype.toString.call(arrLikeObj));
 console.log('类数组对象', document.getElementsByTagName('p'));
 // 如何将一个嵌套多层的数组转化为一层的数组？
+list = [1, [3, 4]];
+console.log('得到去除掉多层嵌套的数组', _.flatten(list));
 
-function flatten() {
-  
+function without(array, values) {
+  if (typeof values === 'undefined') return array;
+  if (array && array.length) {
+		let value = Array.prototype.slice.call(arguments, 1);
+    let newArray = array.filter((item) => {
+      return value.indexOf(item) === -1;
+		});
+		return newArray;
+  } else {
+    return [];
+  }
 }
-args(1, 2, 3, 4, 5);
+console.log('得到的without函数', without([1, 3, 4], 1));
 </script>
 </body>
 </html>

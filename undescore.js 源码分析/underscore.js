@@ -511,11 +511,17 @@
     var output = [], idx = 0, value;
     for (var i = startIndex || 0, length = input && input.length; i < length; i++) {
       value = input[i];
+      // input[i] 是一个数组
       if (value && value.length >= 0 && (_.isArray(value) || _.isArguments(value))) {
         //flatten current level of array or arguments object
         if (!shallow) value = flatten(value, shallow, strict);
         var j = 0, len = value.length;
+        // optput 数组的长度需要加上 len 的长度
         output.length += len;
+        // while 当 j < len 的时候执行下面的程序
+        // while(j < len) {
+        //   optput[idx++] = value[j++];
+        // }
         while (j < len) {
           output[idx++] = value[j++];
         }
@@ -541,22 +547,30 @@
   // Aliased as `unique`.
   _.uniq = _.unique = function(array, isSorted, iteratee, context) {
     if (array == null) return [];
+    // 如果 isSorted isBoolean
     if (!_.isBoolean(isSorted)) {
       context = iteratee;
       iteratee = isSorted;
       isSorted = false;
     }
+    // 如果 iteratee 不是null
     if (iteratee != null) iteratee = cb(iteratee, context);
     var result = [];
     var seen = [];
     for (var i = 0, length = array.length; i < length; i++) {
       var value = array[i],
+      // 获取到返回的结果
           computed = iteratee ? iteratee(value, i, array) : value;
       if (isSorted) {
+        // 如果 i !== 0 或者 seen 不等于 computed 将 value push 进入到 result 中
         if (!i || seen !== computed) result.push(value);
+        // 将computed 结果赋给 seen
         seen = computed;
+        // 如果 iteratee 函数存在的话并且没有被排序
       } else if (iteratee) {
+        // 如果seen 中没有包含有 computed 结果
         if (!_.contains(seen, computed)) {
+          // 将computed 结果推入到 seen 中
           seen.push(computed);
           result.push(value);
         }
@@ -570,6 +584,7 @@
   // Produce an array that contains the union: each distinct element from all of
   // the passed-in arrays.
   _.union = function() {
+    // 传入到 uniq 函数中的 参数 flatten() 返回的是一个数组
     return _.uniq(flatten(arguments, true, true));
   };
 
