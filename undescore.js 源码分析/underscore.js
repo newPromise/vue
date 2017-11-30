@@ -595,13 +595,20 @@
   _.intersection = function(array) {
     if (array == null) return [];
     var result = [];
+    // argsLength 是传入参数的长度
     var argsLength = arguments.length;
     for (var i = 0, length = array.length; i < length; i++) {
       var item = array[i];
+      // 如果item 中有包含的 result continue
       if (_.contains(result, item)) continue;
       for (var j = 1; j < argsLength; j++) {
+        // 确定传入的数组中都要包含有 item
+        // 如果不包含, break跳出
+        // 跳到哪里去？
         if (!_.contains(arguments[j], item)) break;
       }
+      // 使用 j === argsLength 来进行控制
+      // 如果 j === argsLength 将 item push 进入 result
       if (j === argsLength) result.push(item);
     }
     return result;
