@@ -566,7 +566,7 @@
       var value = array[i],
       // iteratee 函数存在？ 执行 iteratee 函数， 否则返回 value
           computed = iteratee ? iteratee(value, i, array) : value;
-      if (isSorted) {  
+      if (isSorted) {
         if (!i || seen !== computed) result.push(value);
         seen = computed;
       } else if (iteratee) {
