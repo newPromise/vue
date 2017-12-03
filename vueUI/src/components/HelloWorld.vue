@@ -14,7 +14,7 @@
    data () {
      return {
        topCase: [],
-       items: ['yellow', 'green', 'red'],
+       items: ['yellow', 'green'],
        colors: 'green'
      }
    },
