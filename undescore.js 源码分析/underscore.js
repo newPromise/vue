@@ -509,12 +509,17 @@
   // Internal implementation of a recursive `flatten` function.
   var flatten = function(input, shallow, strict, startIndex) {
     var output = [], idx = 0, value;
+    // i = 0; length = input.length i < length i++
     for (var i = startIndex || 0, length = input && input.length; i < length; i++) {
       value = input[i];
       // input[i] 是一个数组
+      // if value and value.length and value is array or value is arguments
+      // 判断 value 是一个数组或者是一个类数组对象 arguments
       if (value && value.length >= 0 && (_.isArray(value) || _.isArguments(value))) {
         //flatten current level of array or arguments object
         if (!shallow) value = flatten(value, shallow, strict);
+        // 这里的 value 是通过使用 flatten 输出的结果
+        // value.length 用于获得嵌套数组中的长度一次相加
         var j = 0, len = value.length;
         // optput 数组的长度需要加上 len 的长度
         output.length += len;
@@ -522,7 +527,12 @@
         // while(j < len) {
         //   optput[idx++] = value[j++];
         // }
+        // optput.length = optput.length + len;
+        output.length += len;
+        // 对于每一次都要进行下面的工作
+        // value[j++]
         while (j < len) {
+          // 先输出 j 再进行 ++
           output[idx++] = value[j++];
         }
       } else if (!strict) {
@@ -541,20 +551,24 @@
   _.without = function(array) {
     return _.difference(array, slice.call(arguments, 1));
   };
-
+  // algorighm 演算法， 计算规则, 运算程序
+  // 产生一个数组的副本，如果数组已经被排序了， 你可以选择一个更快的算法
   // Produce a duplicate-free version of the array. If the array has already
   // been sorted, you have the option of using a faster algorithm.
   // Aliased as `unique`.
   _.uniq = _.unique = function(array, isSorted, iteratee, context) {
     if (array == null) return [];
     // 如果 isSorted isBoolean
+    // 判断是否为 布尔值
     if (!_.isBoolean(isSorted)) {
       context = iteratee;
       iteratee = isSorted;
       isSorted = false;
     }
     // 如果 iteratee 不是null
+    // 当 iteratee 不为 null 的时候
     if (iteratee != null) iteratee = cb(iteratee, context);
+    // result 为空 seen 为空
     var result = [];
     var seen = [];
     for (var i = 0, length = array.length; i < length; i++) {
@@ -563,6 +577,9 @@
           computed = iteratee ? iteratee(value, i, array) : value;
       if (isSorted) {
         // 如果 i !== 0 或者 seen 不等于 computed 将 value push 进入到 result 中
+      // iteratee 函数存在？ 执行 iteratee 函数， 否则返回 value
+          computed = iteratee ? iteratee(value, i, array) : value;
+      if (isSorted) {  
         if (!i || seen !== computed) result.push(value);
         // 将computed 结果赋给 seen
         seen = computed;
@@ -571,6 +588,10 @@
         // 如果seen 中没有包含有 computed 结果
         if (!_.contains(seen, computed)) {
           // 将computed 结果推入到 seen 中
+        // 如果 containes 函数返回为 true
+        if (!_.contains(seen, computed)) {
+          // 将 computed 的结果压入进入 seen 中
+          // 将 value 的结果推入到 result 中
           seen.push(computed);
           result.push(value);
         }
@@ -593,13 +614,21 @@
   _.intersection = function(array) {
     if (array == null) return [];
     var result = [];
+    // argsLength 是传入参数的长度
     var argsLength = arguments.length;
     for (var i = 0, length = array.length; i < length; i++) {
       var item = array[i];
+      // 如果item 中有包含的 result continue
       if (_.contains(result, item)) continue;
+      console.log
       for (var j = 1; j < argsLength; j++) {
+        // 确定传入的数组中都要包含有 item
+        // 如果不包含, break跳出
+        // 跳到哪里去？
         if (!_.contains(arguments[j], item)) break;
       }
+      // 使用 j === argsLength 来进行控制
+      // 如果 j === argsLength 将 item push 进入 result
       if (j === argsLength) result.push(item);
     }
     return result;
@@ -621,6 +650,7 @@
     var length = _.max(arguments, 'length').length;
     var results = Array(length);
     while (length-- > 0) {
+      // 使用 pluck 用于萃取获得 arguments 的某种属性值
       results[length] = _.pluck(arguments, length);
     }
     return results;
@@ -667,6 +697,7 @@
   _.lastIndexOf = function(array, item, from) {
     var idx = array ? array.length : 0;
     if (typeof from == 'number') {
+      // 传递 from 将从给定的索引值进行搜索
       idx = from < 0 ? idx + from + 1 : Math.min(idx, from + 1);
     }
     while (--idx >= 0) if (array[idx] === item) return idx;
@@ -691,6 +722,8 @@
     var low = 0, high = array.length;
     while (low < high) {
       var mid = Math.floor((low + high) / 2);
+      // 如果 array[mid] < value的时候 low = mid + 1;
+      // 否则 high = mid
       if (_.comparator(iteratee(array[mid]), value) < 0) low = mid + 1; else high = mid;
     }
     return low;

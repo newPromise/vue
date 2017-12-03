@@ -7,11 +7,11 @@
 	<title>Document</title>
 </head>
 <body>
-<div>
+<div id="odiv">
 	<p class="para"></p>
 	<p class="para"></p>
 </div>
-<script src="./underscore.js"></script>
+<script src="./score.js"></script>
 <script>
   window.onload = function () {
 		let list = [1, 2, 3];
@@ -146,7 +146,6 @@
 	function rejectFn (num) {
 		return num % 2 === 0;
 	}
-	console.log(_.reject(list, rejectFn));
 	// 如果obj 中的对象都通过 predicate 函数的真值检验那么返回为true
 	function every(obj, predicate) {
 		if (obj == null) return true;
@@ -244,6 +243,193 @@ function without(array, values) {
   }
 }
 console.log('得到的without函数', without([1, 3, 4], 1));
+function without(array, value) {
+  console.log('ars', arguments);
+  let a = Array.prototype.slice.call(arguments, 1);
+  let rest = array.filter((item) => {
+    // 这里需要返回一个值
+    return a.indexOf(item) == -1;
+  });
+}
+without([1, 2, 3], 1, 2);
+
+// union 使用 union 用来返回一个数组的并集
+console.log(_.intersection([1, 2, 2, 3], [2, 3, 4]));
+function difference(array, other) {
+	let rest = Array.prototype.slice.call(arguments, 1);
+	let newArr = array.filter((item) => {
+		return other.indexOf(item) === -1;
+	});
+	return newArr;
+}
+console.log(difference([1, 2, 3], [3, 4]));
+function bubbleSort (arr) {
+let len = arr.length;
+  for (let i = 0; i < len; i++) {
+    for (let j = i + 1; j < len; j++) {
+    // 比较相邻两个的大小, 将较大的那个排到后面去
+    // 始终保证
+      if (arr[j] < arr[i]) {
+        // 使用 es6 结构赋值进行交换
+				let t = arr[j];
+				arr[j] = arr[i];
+				arr[i] = t;
+      }
+    }
+  }
+}
+let s = [1, 3, 5 ,2 ,7, 4];
+// 快速排序
+function quickSort(arr) {
+	if (arr.length <= 1) {
+		return arr;
+	}
+	let len = arr.length;
+	let rightArr = [];
+	let leftArr = [];
+	let first = arr[0];
+	for (let i = 0; i < len; i++) {
+		if (arr[i] < first) {
+			leftArr.push(arr[i]);
+		}
+		if (arr[i] > first) {
+			rightArr.push(arr[i]);
+		}
+	}
+	return [].concat(quickSort(leftArr), [first], quickSort(rightArr));
+}
+// 使用 concat 用于返回数组的拼接
+console.log('得到的数组', quickSort([1, 4, 2, 6, 3]));
+
+/** 
+ * @description 用于合成数组
+ * @param {Object} array 传入的多个数组
+ * @return {Object} 返回的经过合成之后的数组
+*/
+function zip(array) {
+	let args = Array.prototype.slice.call(arguments, 0);
+	let f = array;
+	let result = [];
+	console.log('获得到的数组', array, args);
+	array.map((item, index) => {
+		let arr = [];
+		args.map((argItem) => {
+			arr.push(argItem[index]);
+		})
+		result.push(arr);
+	});
+	return result;
+}
+// 进行插入排序
+function chaSort(array) {
+	for (let i = 1; i < array.length; i++) {
+		let temp = array[i];
+		for (let j = i - 1; j >= 0 ; j--) {
+			if (array[j] > temp) {
+				array[j + 1] = array[j];
+				array[j] = temp;
+			}
+		}
+	}
+}
+let chaList = [1, 4, 7, 2, 3];
+chaSort(chaList);
+// 使用 unzip 进行解析数组
+// function unzip(array) {
+//   let ix = 0;
+// 	if (array === null) return [];
+//   let arr = [];
+// 	array.map((items, arrIndex) => {
+// 		arr.push(items[ix]);
+// 	});
+// 	return arr;
+// }
+
+function unzip(array) {
+	return zip.apply(null, array);
+}
+console.log(unzip([['张宁宁', '山东'], ['张艺苇', '河北']]));
+
+/**
+ * @param {Array} list 键数组
+ * @param {Array} values 值数组
+ * @description {Object} 组成的对象
+*/
+function toObj(list, values) {
+	if (list === null) return {};
+	let obj = {};
+	if (typeof values === 'undefined') {
+		console.log('list', list);
+		list.map((item) => {
+			obj[item[0]] = item[1];
+		});
+	} else {
+		list.map((item, index) => {
+			obj[item] = values[index];
+		})
+	}
+	return obj;
+}
+console.log('使用二分法获得到数组中元素的位置', _.sortedIndex([10, 20, 30, 40, 50], 35));
+
+function getMaxProfit(arr) {
+	let minProfit = arr[0];
+	let maxProfit = 0;
+	for (let i = 0; i < arr.length; i++) {
+		minProfit = Math.min(minProfit, arr[i]);
+		let currentProfit = arr[i] - minProfit;
+		maxProfit = Math.max(maxProfit, currentProfit);
+	}
+	return maxProfit;
+}
+console.log(getMaxProfit([1, 2, 3, 4]));
+function clone(obj) {
+  if (obj && typeof obj === 'object') {
+		let cloneObj = Object.prototype.toString.call(obj).slice(8, -1) === 'Array' ? [] : {};
+    for (let prop in obj) {
+      if (obj[prop] && typeof obj[prop] === 'object') {
+        cloneObj[prop] = clone(obj[prop]);
+      } else {
+				cloneObj[prop] = obj[prop];
+				console.log('得到的属性', prop, cloneObj);
+      }
+		}
+		return cloneObj;
+  } else {
+    return obj;
+  }
+}
+function getClass(parent, sClass) {
+  let eles = parent.getElementsByTagName('*');
+  let eleResult = [];
+  let index = 0;
+	let eleRe = new RegExp('\\b' + sClass + '\\b', 'i');
+  for (let i = 0; i < eles.length; i++) {
+    if (eleRe.test(eles[i].className)) {
+      eleResult.push(eles[i]);
+    }
+  }
+  return eleResult;
+}
+console.log('得到的数组', getClass(document.getElementById('odiv'), 'para'));
+function quickSort(arr) {
+	if (arr.length <= 1) {
+		return arr;
+	}
+	let leftArr = [];
+	let rightArr = [];
+	let first = arr[0];
+	for (let i = 0; i < arr.length; i++) {
+		if (arr[i] < first) {
+			leftArr.push(arr[i]);
+		} else if (arr[i] > first) {
+			rightArr.push(arr[i]);
+		}
+	}
+	return [].concat(quickSort(leftArr), [first], quickSort(rightArr));
+}
+console.log('快速排序', quickSort([1, 3, 4, 5,2, 2]));
+
 </script>
 </body>
 </html>
