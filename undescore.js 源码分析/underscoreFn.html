@@ -430,6 +430,25 @@ function quickSort(arr) {
 }
 console.log('快速排序', quickSort([1, 3, 4, 5,2, 2]));
 
+// 使用 _.uniq 用于返回数组去重之后的结果
+
+// 一种更有趣的去重算法
+// 获得到的是已经被排序的数组
+function fillCF(arr) {
+  let seen = [];
+  let result = [];
+  arr.sort();
+for (let i = 0; i < arr.length; i++) {
+  let value = arr[i];
+  let computed = value;
+  if (!i || seen !== computed ) result.push(value);
+  seen = computed; 
+  }
+  return result;
+}
+
+list = ['zhang', 'zhang', 'ning'];
+console.log(fillCF(list));
 </script>
 </body>
 </html>

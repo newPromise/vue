@@ -579,7 +579,7 @@
         // 如果 i !== 0 或者 seen 不等于 computed 将 value push 进入到 result 中
       // iteratee 函数存在？ 执行 iteratee 函数， 否则返回 value
           computed = iteratee ? iteratee(value, i, array) : value;
-      if (isSorted) {  
+      if (isSorted) {
         if (!i || seen !== computed) result.push(value);
         // 将computed 结果赋给 seen
         seen = computed;
