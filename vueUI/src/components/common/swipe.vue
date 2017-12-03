@@ -71,7 +71,6 @@
 			 }
 		 },
 		 // 执行动画
-		 // 基本的思路是将元素显示为三个部分
 		 animate(options) {
 			 let offset = 375;
 			 let translateIndex = this.currentIndex;
