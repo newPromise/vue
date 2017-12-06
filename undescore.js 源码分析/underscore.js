@@ -115,6 +115,8 @@
   // An internal function for creating a new object that inherits from another.
   var baseCreate = function(prototype) {
     if (!_.isObject(prototype)) return {};
+    // 如果 nativeCreate 存在的话
+    // Object.create(prototype)
     if (nativeCreate) return nativeCreate(prototype);
     Ctor.prototype = prototype;
     var result = new Ctor;
