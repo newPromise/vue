@@ -11,7 +11,7 @@
 	<p class="para"></p>
 	<p class="para"></p>
 </div>
-<script src="./score.js"></script>
+<script type="text/javascript" src="./score.js"></script>
 <script>
   window.onload = function () {
 		let list = [1, 2, 3];
@@ -193,7 +193,6 @@
    return value.name.length;
  }
  list = [1, 2, 4];
- console.log(_.groupBy(list, function(num) { return num % 2 }));
  list = [{name: '张宁宁', age: 20}, {name: '张宁宁', age: 50}];
  function group(behavior) {
 	 return function (list, iteratee, context) {
@@ -449,6 +448,26 @@ for (let i = 0; i < arr.length; i++) {
 
 list = ['zhang', 'zhang', 'ning'];
 console.log(fillCF(list));
+
+// 使用 partical 函数 实现占位
+
+function add(a, b) {
+  console.log('yeeeeeeeeeeeeeeeeee');
+  console.log(a + b);
+}
+
+function partical(fn) {
+  let particalArgs = Array.prototype.slice.call(arguments, 1);
+  return function(args) {
+    let fnArgs = Array.prototype.slice.call(arguments, 0);
+    fn(...particalArgs, ...fnArgs);
+  }
+}
+
+let particalFn = partical(add, 9);
+
+particalFn(5);
+
 </script>
 </body>
 </html>
