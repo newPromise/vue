@@ -702,7 +702,12 @@
   // Determines whether to execute a function as a constructor
   // or a normal function with the provided arguments
   var executeBound = function(sourceFunc, boundFunc, context, callingContext, args) {
+    console.log('context', context);
+    // 这里的 callingContext 执行的是 this， 川剧变量
+    console.log(callingContext instanceof boundFunc, callingContext, boundFunc);
+    // 返回的是 sourceFunc 应用 this 的全局变量
     if (!(callingContext instanceof boundFunc)) return sourceFunc.apply(context, args);
+    console.log('noooooooooooooooooon');
     var self = baseCreate(sourceFunc.prototype);
     var result = sourceFunc.apply(self, args);
     if (_.isObject(result)) return result;
@@ -713,7 +718,12 @@
   // optionally). Delegates to **ECMAScript 5**'s native `Function.bind` if
   // available.
   _.bind = function(func, context) {
-    if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
+    // 返回 nativeBind.apply(func, slice.call(argu));
+    console.log('进行传递的参数', slice.call(arguments, 1));
+    // 进行截取从 1， 开始的数
+    // 使用 apply 的时候要注意
+    // if (nativeBind && func.bind === nativeBind) return nativeBind.apply(func, slice.call(arguments, 1));
+    console.log('看这里');
     if (!_.isFunction(func)) throw new TypeError('Bind must be called on a function');
     var args = slice.call(arguments, 2);
     var bound = function() {

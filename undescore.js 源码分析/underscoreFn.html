@@ -449,6 +449,70 @@ for (let i = 0; i < arr.length; i++) {
 
 list = ['zhang', 'zhang', 'ning'];
 console.log(fillCF(list));
+
+function range(start, stop, step) {
+	let args = arguments;
+	let resultArray = [];
+	let theStep = 1;
+	let theStart = 0;
+	if (args.length === 1) {
+		stop = args[0];
+	}
+	if (args.length === 2) {
+		theStart = args[0];
+		stop = args[1];
+	}
+	if (args.length === 3) {
+		theStart = args[0];
+		stop = args[1];
+		theStep = args[2];
+	}
+	if (theStart < stop) {
+		for (let index = theStart; index < stop; index = index + theStep) {
+		  resultArray.push(index);
+	  }
+	 } else {
+		for (let index = theStart; index > stop; index = index + theStep) {
+		resultArray.push(index);
+	 }
+	}
+	return resultArray;
+}
+console.log('range对象', range(5));
+
+console.log('传入的参数是一个的时候', range(0, 7, 2));
+console.log('当我们传入两个参数的时候', range(0, -10, -1));
+
+function range(start, stop, step) {
+	if (arguments.length <= 1) {
+		stop = start || 0;
+		start = 0;
+	}
+	step = step || 1;
+	// 通过使用 Math.max 获取到最大值
+	let length = Math.max(Math.ceil((start - stop) / step), 0);
+	// 通过使用 new Array 进行创建数组
+	let result = new Array(length);
+	for (let index = 0; index < length; index++, start += step) {
+		result[index] = start;
+	}
+	return result;
+}
+function greeting(home) {
+	console.log(`hi, my name is ${this.name}, my home is ${home}`);
+}
+
+function objProto() {
+}
+let newObj = Object.create(objProto.prototype);
+console.log('新的对象是否属于 objProto 的原型', newObj instanceof objProto);
+
+function getName() {
+	console.log('name', this.name);
+}
+
+let bindName = _.bind(getName, { name: '张宁宁' });
+bindName();
 </script>
 </body>
 </html>
