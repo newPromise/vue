@@ -115,7 +115,8 @@
   // An internal function for creating a new object that inherits from another.
   var baseCreate = function(prototype) {
     if (!_.isObject(prototype)) return {};
-    // nativeCreate 是 Object.create
+    // 如果 nativeCreate 存在的话
+    // Object.create(prototype)
     if (nativeCreate) return nativeCreate(prototype);
     Ctor.prototype = prototype;
     var result = new Ctor;
@@ -454,7 +455,6 @@
     if (obj == null) return 0;
     return obj.length === +obj.length ? obj.length : _.keys(obj).length;
   };
-
   // Split a collection into two arrays: one whose elements all satisfy the given
   // predicate, and one whose elements all do not satisfy the predicate.
   _.partition = function(obj, predicate, context) {
@@ -784,8 +784,15 @@
       var position = 0;
       var args = boundArgs.slice();
       for (var i = 0, length = args.length; i < length; i++) {
+        // 将 args的 所有参数都替换掉了
+        // 按照顺序进行插入
         if (args[i] === _) args[i] = arguments[position++];
       }
+      // 将 arguments 压入到 args 中
+      // 当 position 的值小于 arguments.length 的时候
+      // 将 arguments[position++] 压入到 args 中
+      // 当存在多余的参数的时候，将多余的参数进行压入
+      // args.push
       while (position < arguments.length) args.push(arguments[position++]);
       return executeBound(func, bound, this, this, args);
     };

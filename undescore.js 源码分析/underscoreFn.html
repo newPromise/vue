@@ -11,7 +11,7 @@
 	<p class="para"></p>
 	<p class="para"></p>
 </div>
-<script src="./score.js"></script>
+<script src="./thescore.js"></script>
 <script>
   window.onload = function () {
 		let list = [1, 2, 3];
@@ -193,7 +193,6 @@
    return value.name.length;
  }
  list = [1, 2, 4];
- console.log(_.groupBy(list, function(num) { return num % 2 }));
  list = [{name: '张宁宁', age: 20}, {name: '张宁宁', age: 50}];
  function group(behavior) {
 	 return function (list, iteratee, context) {
@@ -513,6 +512,26 @@ function getName() {
 
 let bindName = _.bind(getName, { name: '张宁宁' });
 bindName();
+// 使用 partical 函数 实现占位
+
+function add(a, b) {
+  console.log('yeeeeeeeeeeeeeeeeee');
+  console.log(a + b);
+}
+
+function partical(fn) {
+  let particalArgs = Array.prototype.slice.call(arguments, 1);
+  return function(args) {
+		let fnArgs = Array.prototype.slice.call(arguments, 0);
+		console.log('得到的数组', particalArgs, args);
+    fn(...particalArgs, ...fnArgs);
+  }
+}
+
+let particalFn = partical(add, 9);
+
+particalFn(5);
+
 </script>
 </body>
 </html>

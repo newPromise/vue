@@ -1,158 +1,171 @@
 var PENDING = 0,
-FULFILLED = 1,
-REJECTED = 2;
+    FULFILLED = 1,
+    REJECTED = 2;
 
+// isFunction 用于判断是否为函数
 function isFunction(fn) {
-return fn instanceof Function;
+    return fn instanceof Function;
 }
 
+// isObject 判断是否为
 function isObject(obj) {
-return obj instanceof Object;
+    return obj instanceof Object;
 }
 
 function isPromise(p) {
-return p instanceof Promise;
+    return p instanceof Promise;
 }
 
 // 用于判断 obj.then 是否是一个函数
 function isThenable(obj) {
-return obj && isFunction(obj.then);
+    return obj && isFunction(obj.then);
 }
-
+// 使用 callLater 实现的异步
 function callLater(fn) {
-setTimeout(fn, 0);
+    setTimeout(fn, 0);
 }
 
+// 传递函数参数 executor
 function Promise(executor) {
-var that = this;
-that.status = PENDING;
-that.value = undefined;
-that.handlerQueue = [];
-
-// Promise executor 实现两个函数
-// 执行 excutor 函数
-// 对于 excutor的两个参数分别传入成功的时候的回调函数以及失败的时候的
-// 回调函数
-// 在 executor 中传入两个函数，分别表示成功和失败状态
-executor(function(value) {
-	// 执行 that.transition
-		that.transition(FULFILLED, value);
-}, function(reason) {
-		that.transition(REJECTED, reason);
-});
-// 后面如何实现成功或者失败状态呢？
-
+    var that = this;
+    that.status = PENDING;
+    that.value = undefined;
+		that.handlerQueue = [];
+		// 关于 executor 中的两个函数
+		// resolve 以及 reject
+    executor(function(value) {
+			// FULFILLED 成功状态
+			// resolve 的时候将 状态 FULFILLED 以及 value 共同传入
+        that.transition(FULFILLED, value);
+    }, function(reason) {
+			// 调用 Reject 的时候将 REJECTED 以及 reason 共同传入
+        that.transition(REJECTED, reason);
+    });
 }
 
-// promise 的 transition 的函数
-// 在 promise 上的 transition 函数， use to 
-// if this.staus === PENDING to do this.process() function
+
+// 这个过程: promise => transition => then => process 执行不同操作
+
+// 定义 transition 事件用于传递函数的值
+// 调用 transition 的目的在于改变状态的值
 Promise.prototype.transition = function(status, value) {
-if (this.status === PENDING) {
-		this.status = status;
-		this.value = value;
-		this.process();
-}
+    if (this.status === PENDING) {
+        this.status = status;
+        this.value = value;
+        this.process();
+    }
 };
 
-// 关键的 process 函数
+// 定义 process
+// process 是进行函数执行
 Promise.prototype.process = function() {
-var that = this;
-// when that.status === PENDING 的时候
-// 返回否则进行执行下面的函数
-if (that.status === PENDING) {
-		return;
-}
+    var that = this;
+    if (that.status === PENDING) {
+        return;
+    }
 
-// 
-while (that.handlerQueue.length > 0) {
-	// 在 handlerQueue 中取出handler 对象
-		var handler = that.handlerQueue.shift();
-		(function(handler) {
-				var handlerFn = that.status === FULFILLED ? handler.onFulfilled :
-						handler.onRejected;
-				// 如果handlerFn 是一个 function 的时候
-				// 这里的作用是什么 ?
-				if (isFunction(handlerFn)) {
-						callLater(function() {
-								try {
-									// 执行 handlerFn(that.value) 的函数;
-								  // 调用 resolve 进行下一步函数
-										var x = handlerFn(that.value);
-										resolve(handler.thenPromise, x);
-										// 如果 catch 存在错误
-								} catch (e) {
-									// 调用 handler.thenPromise 的效果
-										handler.thenPromise.transition(REJECTED,
-												e);
-								}
-						});
-				} else {
-					// 在handler. thenPromise 上执行 transition 的函数
-						handler.thenPromise.transition(that.status, that.value);
-				}
-		})(handler);
-}
+    while (that.handlerQueue.length > 0) {
+      // 执行的函数是从 that.handlerQueue 队列中 shift 中的函数
+				var handler = that.handlerQueue.shift();
+				// handler 是从 handlerQueue 队列中取出的对象
+        (function(handler) {
+          // 对于不同的状态要执行不同的函数
+          // handler.onFulfieed 以及 hander.onRejected 函数
+            var handlerFn = that.status === FULFILLED ? handler.onFulfilled :
+                handler.onRejected;
+            // 如果 handlerFn 是一个函数，执行下面的 callLater 函数  
+            if (isFunction(handlerFn)) {
+						  // 使用 callLater 进行异步
+                callLater(function() {
+                    try {
+											  // 调用 onFulfilled 或者 onRejected 函数
+												var x = handlerFn(that.value);
+												// 调用 resolve 函数
+												// 调用 resolve 函数，调用 then
+                        resolve(handler.thenPromise, x);
+                    } catch (e) {
+											// 抛出错误的时候调用 thenPromise 函数
+                        handler.thenPromise.transition(REJECTED,
+                            e);
+                    }
+                });
+            } else {
+							 // 如果 handler 不是一个 function
+               // 通过调用 handler.thenPromise.transition 进行函数传递
+                handler.thenPromise.transition(that.status, that.value);
+            }
+        })(handler);
+    }
 };
 
 // resolve函数, 接收两个参数
 // promise 以及 x
+// 这里面调用 then 将 promise 对象的函数传入
 function resolve(promise, x) {
-if (promise === x) {
-		promise.transition(REJECTED, new TypeError());
-} else if (isPromise(x)) {
-		x.then(function(value) {
-				promise.transition(FULFILLED, value);
-		}, function(reason) {
-				promise.transition(REJECTED, reason);
-		});
-} else if (isObject(x) || isFunction(x)) {
-		try {
-				var then = x.then;
-				if (isFunction(then)) {
-						var called = false;
-						try {
-								then.call(x, function(y) {
-										if (!called) {
-												resolve(promise, y);
-												called = true;
-										}
-								}, function(r) {
-										if (!called) {
-												promise.transition(REJECTED, r);
-												called = true;
-										}
-								});
-						} catch (e) {
-								if (!called) {
-										promise.transition(REJECTED, e);
-								}
-						}
-				} else {
-						promise.transition(FULFILLED, x);
-				}
-		} catch (e) {
-				promise.transition(REJECTED, e);
-		}
-} else {
-		promise.transition(FULFILLED, x);
-}
+  // 如果 promise === x
+    if (promise === x) {
+      // 向promise 中传递 rejectedd 一个 new TypeError
+        promise.transition(REJECTED, new TypeError());
+    } else if (isPromise(x)) {
+      // 这里的 x 是 promise 的实例吗 ? 
+      // 通过调用 promise 的实例进行传递函数
+        x.then(function(value) {
+          // transition 传递
+            promise.transition(FULFILLED, value);
+        }, function(reason) {
+            promise.transition(REJECTED, reason);
+        });
+        // 如果 x 是一个对象或者一个函数
+    } else if (isObject(x) || isFunction(x)) {
+        try {
+            var then = x.then;
+            // 如果 then 是一个函数
+            if (isFunction(then)) {
+                var called = false;
+                try {
+                  // 执行 then.call 函数
+                    then.call(x, function(y) {
+                        if (!called) {
+                            resolve(promise, y);
+                            called = true;
+                        }
+                    }, function(r) {
+                        if (!called) {
+                            promise.transition(REJECTED, r);
+                            called = true;
+                        }
+                    });
+                    // 捕捉 catch
+                } catch (e) {
+                    if (!called) {
+                        promise.transition(REJECTED, e);
+                    }
+                }
+            } else {
+                // 传递 fulfilled
+                promise.transition(FULFILLED, x);
+            }
+        } catch (e) {
+          // 传递一个 rejected
+            promise.transition(REJECTED, e);
+        }
+    } else {
+      // 传递一个 fullfilled
+        promise.transition(FULFILLED, x);
+    }
 };
 
-// 在 promise 的实例上使用 resolve 方法
-// 返回一个新的 promise 对象实例
+///////////////////////
 Promise.resolve = function(value) {
-return new Promise(function(resolve, reject) {
-	// 传入的 value.then 是一个函数的时候
-		if (isThenable(value)) {
-			// 执行 value.then 函数
-				value.then(resolve, reject);
-		}
-		else {
-			// resolve 函数
-				resolve(value);
-		}
-});
+    return new Promise(function(resolve, reject) {
+      // 如果 value.then 是一个函数
+        if (isThenable(value)) {
+          // 执行 value.then 函数
+            value.then(resolve, reject);
+        } else {
+            resolve(value);
+        }
+    });
 };
 
 // promise.reject 函数
@@ -166,20 +179,27 @@ return new Promise(function(resolve, reject) {
 // 执行 promise.then 函数
 // 接收两个函数作为参数
 // 成功函数 onFulfieed 以及 onRejected 拒绝函数
+    return new Promise(function(resolve, reject) {
+        reject(reason);
+    });
+};
+
+// 当调用 then 的时候将 onFulfilled onRejected 函数存入到 handlerQueue 之中
 Promise.prototype.then = function(onFulfilled, onRejected) {
-var thenPromise = new Promise(function() {});
+	  // 返回创建 的一个 new Promise 的一个实例
+    var thenPromise = new Promise(function() {});
 
-this.handlerQueue.push({
-		onFulfilled: onFulfilled,
-		onRejected: onRejected,
-		thenPromise: thenPromise
-});
-
-this.process();
-
-return thenPromise;
+    this.handlerQueue.push({
+        onFulfilled: onFulfilled,
+        onRejected: onRejected,
+        thenPromise: thenPromise
+    });
+    // 执行 process
+    this.process();
+    // 返回一个 thenPromise
+    return thenPromise;
 };
 
 if (module && module.exports) {
-module.exports = Promise;
+    module.exports = Promise;
 }
