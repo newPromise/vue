@@ -792,6 +792,7 @@
     return function() {
       var now = _.now();
       if (!previous && options.leading === false) previous = now;
+      // 当 previous 为 0 的时候， wait 要远远小于 now
       var remaining = wait - (now - previous);
       context = this;
       args = arguments;
@@ -800,12 +801,15 @@
           clearTimeout(timeout);
           timeout = null;
         }
+        console.log('两个不同的时间', now, _.now());
+        console.log('得到的时间间隔', remaining);
         previous = now;
         result = func.apply(context, args);
         if (!timeout) context = args = null;
       } else if (!timeout && options.trailing !== false) {
         timeout = setTimeout(later, remaining);
       }
+      console.log('result', result);
       return result;
     };
   };

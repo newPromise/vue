@@ -854,10 +854,16 @@
     };
     return function() {
       var now = _.now();
+      // 当禁用第一次的时候，将 previous 赋给 now
       if (!previous && options.leading === false) previous = now;
+      // 当 now = previous 的时候 remaining 是 wait
+      // now - previous 是会小于 0 吗 ?
       var remaining = wait - (now - previous);
       context = this;
       args = arguments;
+      // if remainding <= 0
+      // 如果超过了等待时间 now - previous >= wait
+      // 如果 remaining <= 0 如果超过了等待时间
       if (remaining <= 0 || remaining > wait) {
         if (timeout) {
           clearTimeout(timeout);
@@ -866,13 +872,19 @@
         previous = now;
         result = func.apply(context, args);
         if (!timeout) context = args = null;
+        // 如果没有超过等待时间
       } else if (!timeout && options.trailing !== false) {
+        // 在 remaining 时间之后调用 later 函数
+        // 在 remaining 时间之后调用 later 函数
         timeout = setTimeout(later, remaining);
       }
       return result;
     };
   };
+  // the throttle function
+  function throttle (func, wait, options) {
 
+  }
   // Returns a function, that, as long as it continues to be invoked, will not
   // be triggered. The function will be called after it stops being called for
   // N milliseconds. If `immediate` is passed, trigger the function on the
