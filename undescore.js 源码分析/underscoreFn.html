@@ -601,6 +601,26 @@ function throttle (func, wait, options) {
     return result;
   }
 }
+
+function keys (obj) {
+  if (!obj && typeof obj !== 'object') return [];
+  if (Object.keys) return Object.keys(obj);
+  let keys = [];
+  for (let key in obj) {
+    keys.push(key);
+  }
+  return keys;
+}
+
+person = {
+  name: '张宁宁',
+  home: '山东',
+  age: 20
+}
+
+console.log(keys());
+
+
 </script>
 </body>
 </html>
