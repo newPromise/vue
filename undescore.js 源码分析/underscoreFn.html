@@ -617,9 +617,84 @@ person = {
   home: '山东',
   age: 20
 }
-
 console.log(keys());
 
+let numObj = {
+  start: 12,
+  end: 5
+};
+let mpObj = _.mapObject(numObj, function (val, key) {
+  console.log(val, key);
+  return val + 5;
+});
+
+// 实现 mapObject 函数
+
+function compose () {
+  let args = arguments;
+  let start = args.length - 1;
+  return function () {
+    let i = start;
+    let result = args[start].apply(this, arguments);
+    while(i--) result = args[i].call(this, result);
+    return result;
+  }
+}
+
+function compose () {
+  let args = arguments;
+  let start = args.length - 1;
+  return function () {
+    let i = start;
+    let result = args[start].apply(this, arguments);
+    // while 一直一直的不停循环
+    while(i--) result = args[i].call(this, result);
+    return result;
+  }
+}
+
+function compose () {
+  let args = arguments;
+  let start = args.length - 1;
+  return function () {
+    // 通过使用apply 传入一个类数组对象
+    let result = args[start].apply(this, arguments);
+    // 通过使用 call 传入一个函数
+    while(i--) result = args[i].call(this, result);
+    return result;
+  }
+}
+
+function compose () {
+  let args = arguments;
+  let start = args.length - 1;
+  return function () {
+    let result = args[start].apply(this, arguments);
+    while(i--) result = args[i].call(this, result);
+    return result;
+  }
+}
+
+function compose () {
+  let args = arguments;
+  let start = args.length - 1;
+  return function () {
+    // 一开始的时候应用一个 args[start] 函数
+    // 使用 apply 传递数组参数
+    let result = args[start].apply(this, arguments);
+    // 使用 call 传递参数
+    while(i--) result = args[i].call(this, result);
+    return result;
+  }
+}
+
+function omit(obj, iteratee, context) {
+  if (_.isFunction(iteratee)) {
+    iteratee = _.negate(iteratee);
+  } else {
+    ;
+  }
+}
 
 </script>
 </body>

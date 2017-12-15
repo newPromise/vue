@@ -156,6 +156,8 @@ function resolve(promise, x) {
 };
 
 ///////////////////////
+// 调用 promise 的 resolve 函数
+// 使用 promise 的 resulve 状态允许不带有任何的参数
 Promise.resolve = function(value) {
     return new Promise(function(resolve, reject) {
       // 如果 value.then 是一个函数

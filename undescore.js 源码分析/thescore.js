@@ -105,6 +105,8 @@
             l = keys.length;
         for (var i = 0; i < l; i++) {
           var key = keys[i];
+          // if (!undefinedOnly || obj[key] === void 0)
+          // 当 undefinedOnly 是 true 的时候
           if (!undefinedOnly || obj[key] === void 0) obj[key] = source[key];
         }
       }
@@ -1027,10 +1029,16 @@
   _.pick = function(object, oiteratee, context) {
     var result = {}, obj = object, iteratee, keys;
     if (obj == null) return result;
+    // 如果 oiteratee 是一个函数
     if (_.isFunction(oiteratee)) {
+      // keys = _.allKeys(obj)
+      // 得到对象的所有键 keys
       keys = _.allKeys(obj);
+      // iteratee 是一个函数
       iteratee = optimizeCb(oiteratee, context);
     } else {
+      // keys = flatten
+      // 
       keys = flatten(arguments, false, false, 1);
       iteratee = function(value, key, obj) { return key in obj; };
       obj = Object(obj);
@@ -1055,7 +1063,7 @@
     }
     return _.pick(obj, iteratee, context);
   };
-
+  
   // Fill in a given object with default properties.
   _.defaults = createAssigner(_.allKeys, true);
 
