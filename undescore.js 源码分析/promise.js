@@ -27,6 +27,7 @@ function callLater(fn) {
 
 // 传递函数参数 executor
 function Promise(executor) {
+    console.log('promise 被执行');
     var that = this;
     that.status = PENDING;
     that.value = undefined;
@@ -63,7 +64,6 @@ Promise.prototype.process = function() {
     if (that.status === PENDING) {
         return;
     }
-
     while (that.handlerQueue.length > 0) {
       // 执行的函数是从 that.handlerQueue 队列中 shift 中的函数
 				var handler = that.handlerQueue.shift();
@@ -78,10 +78,12 @@ Promise.prototype.process = function() {
 						  // 使用 callLater 进行异步
                 callLater(function() {
                     try {
-											  // 调用 onFulfilled 或者 onRejected 函数
+                        // 调用 onFulfilled 或者 onRejected 函数
+                        // 执行 handlerFn 这个函数
+                        // handlerFn 执行 that.value
 												var x = handlerFn(that.value);
 												// 调用 resolve 函数
-												// 调用 resolve 函数，调用 then
+                        // 调用 resolve 函数，调用 then
                         resolve(handler.thenPromise, x);
                     } catch (e) {
 											// 抛出错误的时候调用 thenPromise 函数
@@ -101,8 +103,11 @@ Promise.prototype.process = function() {
 // resolve函数, 接收两个参数
 // promise 以及 x
 // 这里面调用 then 将 promise 对象的函数传入
+// 一个 promise 对象以及一个 x 
+// x 是调用函数返回的结果
 function resolve(promise, x) {
   // 如果 promise === x
+    console.log('详细xinx', promise, x);
     if (promise === x) {
       // 向promise 中传递 rejectedd 一个 new TypeError
         promise.transition(REJECTED, new TypeError());
@@ -116,6 +121,7 @@ function resolve(promise, x) {
             promise.transition(REJECTED, reason);
         });
         // 如果 x 是一个对象或者一个函数
+        // 如果
     } else if (isObject(x) || isFunction(x)) {
         try {
             var then = x.then;
@@ -123,7 +129,7 @@ function resolve(promise, x) {
             if (isFunction(then)) {
                 var called = false;
                 try {
-                  // 执行 then.call 函数
+                  // 使用 call 进行函数调用
                     then.call(x, function(y) {
                         if (!called) {
                             resolve(promise, y);
@@ -151,6 +157,8 @@ function resolve(promise, x) {
         }
     } else {
       // 传递一个 fullfilled
+      console.log('被执行', x);
+      // 表示改变此时的状态为 FULFILLED 
         promise.transition(FULFILLED, x);
     }
 };
@@ -178,13 +186,6 @@ return new Promise(function(resolve, reject) {
 });
 };
 
-// 执行 promise.then 函数
-// 接收两个函数作为参数
-// 成功函数 onFulfieed 以及 onRejected 拒绝函数
-    return new Promise(function(resolve, reject) {
-        reject(reason);
-    });
-};
 
 // 当调用 then 的时候将 onFulfilled onRejected 函数存入到 handlerQueue 之中
 Promise.prototype.then = function(onFulfilled, onRejected) {
